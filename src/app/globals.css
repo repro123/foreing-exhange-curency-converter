@@ -1,1 +1,90 @@
 @import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --primary: #cef739;
+  --primary-dark: #283300;
+  --success: #42eb05;
+  --error: #ff4141;
+  --background: #0a0a0a;
+  --foreground: #ffffff;
+}
+
+@theme inline {
+  --color-primary: var(--primary);
+  --color-primary-dark: var(--primary-dark);
+  --color-success: var(--success);
+  --color-error: var(--error);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+}
+
+@utility preset-1 {
+  font-size: 2.5rem;
+  line-height: 100%;
+  letter-spacing: -0.5px;
+}
+
+@utility preset-1-tablet {
+  font-size: 2rem;
+  line-height: 100%;
+  letter-spacing: -0.5px;
+}
+
+@utility preset-2 {
+  font-size: 1.25rem;
+  line-height: 120%;
+  letter-spacing: -0.5px;
+}
+
+@utility preset-2-bold {
+  font-size: 1.25rem;
+  line-height: 140%;
+  letter-spacing: -0.5px;
+  font-weight: 700;
+}
+
+@utility preset-3 {
+  font-size: 1rem;
+  line-height: 120%;
+  letter-spacing: 1px;
+}
+
+@utility preset-3-medium {
+  font-size: 1rem;
+  line-height: 120%;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+@utility preset-3-bold {
+  font-size: 1rem;
+  line-height: 110%;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
+
+@utility preset-4 {
+  font-size: 0.875rem;
+  line-height: 120%;
+  letter-spacing: 1px;
+}
+
+@utility preset-5 {
+  font-size: 0.75rem;
+  line-height: 120%;
+  letter-spacing: 0.5px;
+}
+
+@utility preset-5-medium {
+  font-size: 0.75rem;
+  line-height: 130%;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+@utility preset-6 {
+  font-size: 0.625rem;
+  line-height: 100%;
+}

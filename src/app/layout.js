@@ -5,8 +5,6 @@ const myFont = localFont({
   src: "./fonts/jetbrains-mono-variable.ttf",
 });
 
-console.log(myFont);
-
 export const metadata = {
   title: "Foreign Exchange Currency Converter",
   description: "Convert currencies in real-time",
