@@ -9,6 +9,12 @@
   --error: #ff4141;
   --background: #0a0a0a;
   --foreground: #ffffff;
+  --nav: #9d9d9d;
+}
+
+.dark {
+  --foreground: #0a0a0a;
+  --background: #ffffff;
 }
 
 @theme inline {
@@ -18,6 +24,7 @@
   --color-error: var(--error);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-nav: var(--nav);
 }
 
 @utility preset-1 {
