@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect } from "react";
-import LogoSVG from "@/app/components/SVGs/LogoSVG";
+import LogoSVG from "@/components/SVGs/LogoSVG";
 
 export default function Error({ error, unstable_retry }) {
   useEffect(() => {

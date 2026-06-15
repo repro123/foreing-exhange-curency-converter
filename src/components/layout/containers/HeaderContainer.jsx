@@ -1,6 +1,6 @@
-import LogoSVG from "@/app/components/SVGs/LogoSVG";
-import NavDots from "@/app/components/ui/NavDots";
-import CurrenciesNumber from "@/app/features/currencies-number/CurrenciesNumber";
+import LogoSVG from "@/components/SVGs/LogoSVG";
+import NavDots from "@/components/ui/NavDots";
+import CurrenciesNumber from "@/features/currencies-number/CurrenciesNumber";
 
 function HeaderContainer() {
   return (
