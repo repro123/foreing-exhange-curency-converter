@@ -1,5 +1,6 @@
 import localFont from "next/font/local";
 import "./globals.css";
+import ThemeProviders from "@/features/theme/ThemeProviders";
 
 const myFont = localFont({
   src: "./fonts/jetbrains-mono-variable.ttf",
@@ -12,9 +13,13 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${myFont.className} antialiased`}>
+    <html
+      lang="en"
+      className={`${myFont.className} antialiased`}
+      suppressHydrationWarning
+    >
       <body className="min-h-full flex flex-col bg-background text-foreground">
-        {children}
+        <ThemeProviders>{children}</ThemeProviders>
       </body>
     </html>
   );

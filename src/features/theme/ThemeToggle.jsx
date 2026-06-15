@@ -10,8 +10,11 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import ThemeIcon from "@/features/theme/ThemeIcon";
+import ThemeSelector from "@/features/theme/ThemeSelector";
+import { useTheme } from "next-themes";
 
 function ThemeToggle() {
+  const { theme } = useTheme();
   return (
     <Popover>
       <PopoverTrigger
@@ -23,10 +26,11 @@ function ThemeToggle() {
       />
       <PopoverContent align="start">
         <PopoverHeader>
-          <PopoverTitle>Select Theme</PopoverTitle>
+          <PopoverTitle id="select-theme">Select Theme</PopoverTitle>
           <PopoverDescription>
-            Switch between light and dark modes or use the system preference.
+            Current theme: <span className="capitalize">{theme}</span>
           </PopoverDescription>
+          <ThemeSelector aria="select-theme" />
         </PopoverHeader>
       </PopoverContent>
     </Popover>

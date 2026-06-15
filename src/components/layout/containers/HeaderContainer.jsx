@@ -3,7 +3,7 @@ import NavDots from "@/components/ui/NavDots";
 import CurrenciesNumber from "@/features/currencies-number/CurrenciesNumber";
 import CurrenciesNumberSkeleton from "@/features/currencies-number/CurrenciesNumberSkeleton";
 import ThemeToggle from "@/features/theme/ThemeToggle";
-import { Sun } from "lucide-react";
+
 import { Suspense } from "react";
 
 function HeaderContainer() {
