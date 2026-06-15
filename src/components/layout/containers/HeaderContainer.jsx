@@ -1,6 +1,8 @@
 import LogoSVG from "@/components/SVGs/LogoSVG";
 import NavDots from "@/components/ui/NavDots";
 import CurrenciesNumber from "@/features/currencies-number/CurrenciesNumber";
+import CurrenciesNumberSkeleton from "@/features/currencies-number/CurrenciesNumberSkeleton";
+import { Suspense } from "react";
 
 function HeaderContainer() {
   return (
@@ -9,12 +11,17 @@ function HeaderContainer() {
 
       <div className="preset-6 md:preset-4 ">
         <div className="flex items-center gap-2 text-nav">
-          <CurrenciesNumber />
+          <Suspense fallback={<CurrenciesNumberSkeleton />}>
+            <CurrenciesNumber />
+          </Suspense>
+
           <NavDots />
 
-          <span>EOD</span>
+          <p>EOD</p>
+
           <NavDots />
-          <span>ECB Data</span>
+
+          <p>ECB Data</p>
         </div>
       </div>
     </div>
