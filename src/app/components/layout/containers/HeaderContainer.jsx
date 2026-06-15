@@ -1,5 +1,6 @@
 import LogoSVG from "@/app/components/SVGs/LogoSVG";
 import NavDots from "@/app/components/ui/NavDots";
+import CurrenciesNumber from "@/app/features/currencies-number/CurrenciesNumber";
 
 function HeaderContainer() {
   return (
@@ -8,7 +9,7 @@ function HeaderContainer() {
 
       <div className="preset-6 md:preset-4 ">
         <div className="flex items-center gap-2 text-nav">
-          <span>55 currencies</span>
+          <CurrenciesNumber />
           <NavDots />
 
           <span>EOD</span>
