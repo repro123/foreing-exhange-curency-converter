@@ -1,9 +1,9 @@
 import HeaderContainer from "@/components/layout/containers/HeaderContainer";
 
-function Header({ children }) {
+function Header() {
   return (
     <header className="p-4">
-      <HeaderContainer>{children}</HeaderContainer>
+      <HeaderContainer />
     </header>
   );
 }

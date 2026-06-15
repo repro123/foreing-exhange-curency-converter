@@ -5,13 +5,13 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --primary: #cef739;
+  --primary: #5a7a00;
   --primary-dark: #283300;
   --success: #42eb05;
   --error: #ff4141;
-  --background: #0a0a0a;
-  --foreground: #ffffff;
-  --nav: #9d9d9d;
+  --foreground: #0a0a0a;
+  --background: #ffffff;
+  --nav: #202022;
 
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
@@ -45,14 +45,15 @@
 }
 
 .dark {
-  --foreground: #0a0a0a;
-  --background: #ffffff;
+  --background: #0a0a0a;
+  --foreground: #ffffff;
+  --primary: #cef739;
+  --nav: #9d9d9d;
 
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
   --primary-foreground: oklch(0.205 0 0);
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
@@ -194,4 +195,11 @@
 @utility preset-6 {
   font-size: 0.625rem;
   line-height: 100%;
+}
+
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
 }
