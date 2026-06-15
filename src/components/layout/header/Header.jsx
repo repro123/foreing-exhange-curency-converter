@@ -1,4 +1,4 @@
-import HeaderContainer from "@/app/components/layout/containers/HeaderContainer";
+import HeaderContainer from "@/components/layout/containers/HeaderContainer";
 
 function Header({ children }) {
   return (
