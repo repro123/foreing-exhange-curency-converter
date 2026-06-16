@@ -12,11 +12,14 @@ import {
 import ThemeIcon from "@/features/theme/ThemeIcon";
 import ThemeSelector from "@/features/theme/ThemeSelector";
 import { useTheme } from "next-themes";
+import { useState } from "react";
 
 function ThemeToggle() {
   const { theme } = useTheme();
+  const [open, setOpen] = useState(false);
+
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger
         render={
           <Button variant="theme" aria-label="Switch theme">
@@ -30,7 +33,7 @@ function ThemeToggle() {
           <PopoverDescription>
             Current theme: <span className="capitalize">{theme}</span>
           </PopoverDescription>
-          <ThemeSelector aria="select-theme" />
+          <ThemeSelector aria="select-theme" onSelect={() => setOpen(false)} />
         </PopoverHeader>
       </PopoverContent>
     </Popover>

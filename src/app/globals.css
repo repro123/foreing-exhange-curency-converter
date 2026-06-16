@@ -7,15 +7,17 @@
 :root {
   --primary: #5a7a00;
   --primary-dark: #283300;
-  --success: #42eb05;
-  --error: #ff4141;
+  --success: #1a7a00;
+  --destructive: #ff4141;
   --foreground: #0a0a0a;
   --background: #ffffff;
   --nav: #202022;
+  --border: oklch(0.922 0 0);
+  --card-base: oklch(0.922 0 0);
 
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
   --popover-foreground: oklch(0.145 0 0);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
@@ -24,8 +26,6 @@
   --muted-foreground: oklch(0.556 0 0);
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
   --chart-1: oklch(0.87 0 0);
@@ -49,10 +49,14 @@
   --foreground: #ffffff;
   --primary: #cef739;
   --nav: #9d9d9d;
+  --card: #202022;
+  --popover: #202022;
+  --border: #2e2e2e;
+  --card-base: #171719;
+  --success: #42eb05;
+  --destructive: oklch(0.704 0.191 22.216);
 
-  --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
   --primary-foreground: oklch(0.205 0 0);
   --secondary: oklch(0.269 0 0);
@@ -61,8 +65,7 @@
   --muted-foreground: oklch(0.708 0 0);
   --accent: oklch(0.269 0 0);
   --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
+
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
   --chart-1: oklch(0.87 0 0);
@@ -88,6 +91,8 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-nav: var(--nav);
+  --color-card-base: var(--card-base);
+  --color-destructive: var(--destructive);
 
   --font-heading: var(--font-mono);
   --font-mono: var(--font-mono);
@@ -107,7 +112,7 @@
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
-  --color-destructive: var(--destructive);
+
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
   --color-muted-foreground: var(--muted-foreground);
@@ -202,4 +207,26 @@
   [role="button"]:not(:disabled) {
     cursor: pointer;
   }
+
+  * {
+    @apply border-border;
+  }
+}
+
+@keyframes ticker {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.ticker-track {
+  animation: ticker 90s linear infinite;
+}
+
+.ticker-wrapper:hover .ticker-track {
+  animation-play-state: paused;
 }

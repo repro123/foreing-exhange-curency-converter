@@ -2,9 +2,13 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useTheme } from "next-themes";
 
-function ThemeSelector({ aria }) {
-  const { theme, setTheme, themes, ...x } = useTheme();
-  console.log(x);
+function ThemeSelector({ aria, onSelect }) {
+  const { theme, setTheme, themes } = useTheme();
+
+  const handleChange = (value) => {
+    setTheme(value);
+    onSelect();
+  };
 
   return (
     <RadioGroup
@@ -12,7 +16,7 @@ function ThemeSelector({ aria }) {
       className="w-fit mt-2"
       aria-labelledby={aria}
       value={theme}
-      onValueChange={setTheme}
+      onValueChange={handleChange}
     >
       {themes.map((themeOption) => (
         <div key={themeOption} className="flex items-center gap-3 ">
