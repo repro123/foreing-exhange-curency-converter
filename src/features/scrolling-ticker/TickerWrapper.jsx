@@ -1,19 +1,38 @@
 import Ticker from "@/features/scrolling-ticker/Ticker";
+import { today, yesterday } from "@/lib/utils";
+import { MARKET_PAIRS } from "@/data/constants";
+import { getLiveMarketRates } from "@/lib/live-market";
 
-const items = [
-  { pair: "1USD/JPY", rate: 154.3, change: 2 },
-  { pair: "2USD/JPY", rate: 154.3, change: 0.2 },
-  { pair: "3USD/JPY", rate: 1454.3, change: 0 },
-  { pair: "4USD/JPY", rate: 14.3, change: 0.5 },
-  { pair: "5USD/JPY", rate: 154.3, change: 2 },
-  { pair: "6USD/JPY", rate: 154.3, change: 2 },
-  { pair: "7USD/JPY", rate: 154.3, change: 5 },
-  { pair: "8USD/JPY", rate: 154.3, change: 2 },
-  { pair: "9USD/JPY", rate: 154.3, change: 2 },
-  { pair: "0USD/JPY", rate: 154.3, change: 2 },
-];
+async function TickerWrapper() {
+  const [todayRates, yesterdayRates] = await Promise.all([
+    Promise.all(
+      MARKET_PAIRS.map((pair) =>
+        getLiveMarketRates(pair.base, pair.quote, today),
+      ),
+    ),
+    Promise.all(
+      MARKET_PAIRS.map((pair) =>
+        getLiveMarketRates(pair.base, pair.quote, yesterday),
+      ),
+    ),
+  ]);
 
-function TickerWrapper() {
+  const items = todayRates.map((today) => {
+    const yesterday = yesterdayRates.find(
+      (y) => y.base === today.base && y.quote === today.quote,
+    );
+
+    const change = yesterday
+      ? ((today.rate - yesterday.rate) / yesterday.rate) * 100
+      : 0;
+
+    return {
+      pair: `${today.base}/${today.quote}`,
+      rate: today.rate,
+      change: parseFloat(change.toFixed(2)),
+    };
+  });
+
   const tickerItems = [...items, ...items];
 
   return (

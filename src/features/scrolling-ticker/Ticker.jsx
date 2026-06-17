@@ -9,7 +9,11 @@ function Ticker({ item }) {
         className={`${item.change >= 0 ? "text-success" : "text-destructive"} flex gap-2 items-center`}
       >
         <span>{item.change >= 0 ? "▲" : "▼"}</span>
-        <span>{Math.abs(item.change)}%</span>
+        <span>
+          {item.change > 0 && "+"}
+          {item.change < 0 && "-"}
+          {Math.abs(item.change)}%
+        </span>
       </span>
     </div>
   );
