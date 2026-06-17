@@ -1,4 +1,3 @@
-import CurrenciesNumberSkeleton from "@/features/currencies-number/CurrenciesNumberSkeleton";
 import { getCurrencies } from "@/lib/currencies";
 
 async function CurrenciesNumber() {

@@ -13,7 +13,8 @@
   --background: #ffffff;
   --nav: #202022;
   --border: oklch(0.922 0 0);
-  --card-base: oklch(0.922 0 0);
+  --card-base: #f4f4f5;
+  --card-heading: #6b6b6b;
 
   --card: oklch(1 0 0);
   --popover: oklch(1 0 0);
@@ -53,6 +54,7 @@
   --popover: #202022;
   --border: #2e2e2e;
   --card-base: #171719;
+  --card-heading: #c6c6c6;
   --success: #42eb05;
   --destructive: oklch(0.704 0.191 22.216);
 
@@ -92,6 +94,7 @@
   --color-foreground: var(--foreground);
   --color-nav: var(--nav);
   --color-card-base: var(--card-base);
+  --color-card-heading: var(--card-heading);
   --color-destructive: var(--destructive);
 
   --font-heading: var(--font-mono);
@@ -229,4 +232,16 @@
 
 .ticker-wrapper:hover .ticker-track {
   animation-play-state: paused;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Target Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
 }

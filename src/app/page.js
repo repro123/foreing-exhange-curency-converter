@@ -7,7 +7,7 @@ export default function Home() {
     <>
       <Header />
       <Aside />
-      <Main></Main>
+      <Main />
     </>
   );
 }
