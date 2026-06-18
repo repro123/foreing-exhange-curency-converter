@@ -4,16 +4,39 @@ import InputCard from "@/features/check-rates/InputCard";
 import SwapBtn from "@/features/check-rates/SwapBtn";
 import { Star } from "lucide-react";
 
-function CheckRateSection() {
+import { getCurrencies } from "@/lib/currencies";
+import { POPULAR_CURRENCIES } from "@/data/constants";
+
+async function CheckRateSection() {
+  const currencies = await getCurrencies();
+
+  const popularCurrencies = POPULAR_CURRENCIES.map((cur) =>
+    currencies.find((currency) => currency.iso_code === cur),
+  ).filter(Boolean);
+
+  const otherCurrencies = currencies.filter(
+    (currency) => !POPULAR_CURRENCIES.includes(currency.iso_code),
+  );
+
   return (
     <section>
       <h1 className="preset-2 uppercase">check the rate </h1>
 
       <div className="bg-card-base mt-4 rounded-[20px]">
         <div className="p-4 flex flex-col gap-4 md:flex-row items-center">
-          <InputCard type="send" />
+          <InputCard
+            type="send"
+            currencies={currencies}
+            popularCurrencies={popularCurrencies}
+            otherCurrencies={otherCurrencies}
+          />
           <SwapBtn />
-          <InputCard type="receive" />
+          <InputCard
+            type="receive"
+            currencies={currencies}
+            popularCurrencies={popularCurrencies}
+            otherCurrencies={otherCurrencies}
+          />
         </div>
 
         <div className="p-4 border-t border-dashed flex flex-col items-center gap-4 md:flex-row md:justify-between w-full">

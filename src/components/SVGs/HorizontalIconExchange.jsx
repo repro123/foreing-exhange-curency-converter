@@ -1,0 +1,22 @@
+function HorizontalIconExchange({ className = "" }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      fill="none"
+      viewBox="0 0 20 20"
+      className={className}
+    >
+      <path
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+        d="M6 9 2 5l4-4M2 5h16m-4 6 4 4-4 4m4-4H2"
+      />
+    </svg>
+  );
+}
+
+export default HorizontalIconExchange;

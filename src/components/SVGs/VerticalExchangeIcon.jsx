@@ -1,0 +1,22 @@
+function VerticalExchangeIcon({ className = "" }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      fill="none"
+      viewBox="0 0 20 20"
+      className={className}
+    >
+      <path
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+        d="m11 6 4-4 4 4m-4-4v16m-6-4-4 4-4-4m4 4V2"
+      />
+    </svg>
+  );
+}
+
+export default VerticalExchangeIcon;

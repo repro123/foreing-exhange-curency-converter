@@ -6,3 +6,5 @@ export const MARKET_PAIRS = [
   { base: "AUD", quote: "USD" },
   { base: "USD", quote: "CAD" },
 ];
+
+export const POPULAR_CURRENCIES = ["USD", "EUR", "GBP", "NGN"];
