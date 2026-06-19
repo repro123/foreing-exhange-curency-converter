@@ -1,7 +1,5 @@
 "use client";
 
-import { useSearchParams, useRouter } from "next/navigation";
-
 import {
   Combobox,
   ComboboxCollection,
@@ -19,24 +17,24 @@ import { Button } from "@/components/ui/button";
 import { getCurrencyFlag, shortenCurrencyName } from "@/lib/utils";
 import Image from "next/image";
 import ArrowDown from "@/components/SVGs/ArrowDown";
+import { useCurrencyParams } from "@/hooks/useCurrencyParams";
 
 function CurrencySelect({
   currencies,
   popularCurrencies,
   otherCurrencies,
   paramKey,
-  defaultValue,
 }) {
-  const searchParams = useSearchParams();
-  const router = useRouter();
+  const { from, to, updateParams } = useCurrencyParams();
 
-  const selectedCode = searchParams.get(paramKey) ?? defaultValue;
+  const selectedCode = paramKey === "from" ? from : to;
+
   const selected = currencies.find((c) => c.iso_code === selectedCode) ?? null;
 
   const handleChange = (isoCode) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set(paramKey, isoCode);
-    router.push(`?${params.toString()}`);
+    updateParams({
+      [paramKey]: isoCode,
+    });
   };
 
   const allCurrencies = [

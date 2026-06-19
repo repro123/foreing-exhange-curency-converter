@@ -9,6 +9,8 @@ const myFont = localFont({
 export const metadata = {
   title: "Foreign Exchange Currency Converter",
   description: "Convert currencies in real-time",
+  applicationName: "Foreign exchange currency converter",
+  manifest: "/site.webmanifest",
 };
 
 export default function RootLayout({ children }) {
