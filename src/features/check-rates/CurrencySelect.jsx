@@ -80,7 +80,7 @@ function CurrencySelect({
           </Button>
         }
       />
-      <ComboboxContent>
+      <ComboboxContent className="w-64">
         <ComboboxInput showTrigger={false} placeholder="Search currencies..." />
         <ComboboxEmpty>No currencies found.</ComboboxEmpty>
         <ComboboxList>

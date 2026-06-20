@@ -21,7 +21,12 @@ export function useCurrencyParams() {
       }
     });
 
-    router.push(`?${params.toString()}`);
+    const nextUrl = `?${params.toString()}`;
+    const currentUrl = `?${searchParams.toString()}`;
+
+    if (nextUrl === currentUrl) return;
+
+    router.push(nextUrl);
   }
 
   return {

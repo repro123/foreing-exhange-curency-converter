@@ -3,12 +3,12 @@ import CheckRateSection from "@/features/check-rates/CheckRateSection";
 import CheckRatesSectionSkeleton from "@/features/check-rates/CheckRatesSectionSkeleton";
 import { Suspense } from "react";
 
-function Main(main) {
+function Main({ searchParams }) {
   return (
     <main className="px-4">
       <MainContainer>
         <Suspense fallback={<CheckRatesSectionSkeleton />}>
-          <CheckRateSection />
+          <CheckRateSection searchParams={searchParams} />
         </Suspense>
 
         <section></section>

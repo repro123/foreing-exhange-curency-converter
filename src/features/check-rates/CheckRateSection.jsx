@@ -6,8 +6,11 @@ import { Star } from "lucide-react";
 
 import { getCurrencies } from "@/lib/currencies";
 import { POPULAR_CURRENCIES } from "@/data/constants";
+import { Suspense } from "react";
+import ConvertedAmount from "@/features/check-rates/ConvertedAmount";
+import RateSummary from "@/features/check-rates/RateSummary";
 
-async function CheckRateSection() {
+async function CheckRateSection({ searchParams }) {
   const currencies = await getCurrencies();
 
   const popularCurrencies = POPULAR_CURRENCIES.map((cur) =>
@@ -17,6 +20,10 @@ async function CheckRateSection() {
   const otherCurrencies = currencies.filter(
     (currency) => !POPULAR_CURRENCIES.includes(currency.iso_code),
   );
+
+  const from = searchParams.from ?? "USD";
+  const to = searchParams.to ?? "EUR";
+  const amount = Number(searchParams.amount ?? "1000");
 
   return (
     <section>
@@ -36,11 +43,26 @@ async function CheckRateSection() {
             currencies={currencies}
             popularCurrencies={popularCurrencies}
             otherCurrencies={otherCurrencies}
-          />
+          >
+            {" "}
+            <Suspense
+              key={`${from}-${to}-${amount}`}
+              fallback={
+                <p className="preset-1-tablet lg:preset-1 text-primary">...</p>
+              }
+            >
+              <ConvertedAmount from={from} to={to} amount={amount} />
+            </Suspense>
+          </InputCard>
         </div>
 
         <div className="p-4 border-t border-dashed flex flex-col items-center gap-4 md:flex-row md:justify-between w-full">
-          <p className="preset-6 md:preset-5">1 USD = 0.8530 EUR</p>
+          <Suspense
+            key={`${from}-${to}`}
+            fallback={<p className="preset-6 md:preset-5">Loading rate...</p>}
+          >
+            <RateSummary from={from} to={to} />
+          </Suspense>
 
           <div className="flex items-center gap-4">
             <Toggle

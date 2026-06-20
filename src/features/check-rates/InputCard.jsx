@@ -2,9 +2,34 @@
 
 import CurrencySelect from "@/features/check-rates/CurrencySelect";
 import { useCurrencyParams } from "@/hooks/useCurrencyParams";
+import { useEffect, useState } from "react";
 
-function InputCard({ type, currencies, popularCurrencies, otherCurrencies }) {
+function InputCard({
+  type,
+  currencies,
+  popularCurrencies,
+  otherCurrencies,
+  children,
+}) {
+  console.log("render");
   const { amount, updateParams } = useCurrencyParams();
+  const [inputVal, setInputVal] = useState(amount);
+
+  const isSend = type === "send";
+
+  useEffect(() => {
+    if (!isSend) return;
+    console.log("effect");
+
+    const timeout = setTimeout(() => {
+      console.log(type, inputVal);
+      updateParams({
+        amount: inputVal,
+      });
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, [inputVal, isSend, type]);
 
   return (
     <div className="bg-card rounded-2xl p-4 w-full border">
@@ -14,19 +39,18 @@ function InputCard({ type, currencies, popularCurrencies, otherCurrencies }) {
         <label className="sr-only" htmlFor={`${type}-amount`}>
           Amount
         </label>
-        <input
-          type="number"
-          name="send"
-          value={type === "send" ? amount : ""}
-          onChange={(e) =>
-            updateParams({
-              amount: e.target.value,
-            })
-          }
-          id={`${type}-amount`}
-          readOnly={type === "receive"}
-          className={`preset-1-tablet lg:preset-1 ${type === "receive" ? "text-primary" : ""} w-full border border-transparent hover:border-b-foreground hover:border-dashed focus:border-primary focus:rounded-lg outline outline-transparent focus:outline-primary`}
-        />
+
+        {isSend ? (
+          <input
+            type="number"
+            value={inputVal}
+            onChange={(e) => setInputVal(e.target.value)}
+            id={`${type}-amount`}
+            className="preset-1-tablet lg:preset-1 w-full border border-transparent hover:border-b-foreground hover:border-dashed focus:border-primary focus:rounded-lg outline outline-transparent focus:outline-primary"
+          />
+        ) : (
+          children
+        )}
 
         <CurrencySelect
           currencies={currencies}
