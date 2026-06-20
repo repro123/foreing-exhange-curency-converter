@@ -37,7 +37,9 @@ async function CheckRateSection({ searchParams }) {
             popularCurrencies={popularCurrencies}
             otherCurrencies={otherCurrencies}
           />
+
           <SwapBtn />
+
           <InputCard
             type="receive"
             currencies={currencies}

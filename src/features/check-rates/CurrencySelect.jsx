@@ -48,8 +48,6 @@ function CurrencySelect({
     },
   ];
 
-  console.log("SELECTED:", selected);
-
   return (
     <Combobox
       items={allCurrencies}
