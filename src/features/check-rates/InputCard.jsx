@@ -20,7 +20,6 @@ function InputCard({
     if (!isSend) return;
 
     const timeout = setTimeout(() => {
-      console.log(type, inputVal);
       updateParams({
         amount: inputVal,
       });
