@@ -1,14 +1,15 @@
-import { Button } from "@/components/ui/button";
-import { Toggle } from "@/components/ui/toggle";
-import InputCard from "@/features/check-rates/InputCard";
-import SwapBtn from "@/features/check-rates/SwapBtn";
-import { Star } from "lucide-react";
+import { Suspense } from "react";
 
 import { getCurrencies } from "@/lib/currencies";
 import { POPULAR_CURRENCIES } from "@/data/constants";
-import { Suspense } from "react";
+
+import { Button } from "@/components/ui/button";
+
+import InputCard from "@/features/check-rates/InputCard";
+import SwapBtn from "@/features/check-rates/SwapBtn";
 import ConvertedAmount from "@/features/check-rates/ConvertedAmount";
 import RateSummary from "@/features/check-rates/RateSummary";
+import FavoriteToggleBtn from "@/features/favorites/FavoriteToggleBtn";
 
 async function CheckRateSection({ searchParams }) {
   const currencies = await getCurrencies();
@@ -67,15 +68,7 @@ async function CheckRateSection({ searchParams }) {
           </Suspense>
 
           <div className="flex items-center gap-4">
-            <Toggle
-              aria-label="Toggle bookmark"
-              size="lg"
-              variant="outline"
-              className="uppercase preset-5-medium"
-            >
-              <Star className="group-aria-pressed/toggle:fill-black" />
-              Favorite
-            </Toggle>
+            <FavoriteToggleBtn />
 
             <Button
               size="lg"

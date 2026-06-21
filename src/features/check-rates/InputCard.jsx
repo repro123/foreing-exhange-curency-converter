@@ -11,7 +11,6 @@ function InputCard({
   otherCurrencies,
   children,
 }) {
-  console.log("render");
   const { amount, updateParams } = useCurrencyParams();
   const [inputVal, setInputVal] = useState(amount);
 
