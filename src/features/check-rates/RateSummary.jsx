@@ -1,11 +1,7 @@
-import { getExchangeRate } from "@/lib/exchange-rate";
-
-async function RateSummary({ from, to }) {
-  const data = await getExchangeRate(from, to, 1);
-
+function RateSummary({ from, to, rate }) {
   return (
     <p className="preset-6 md:preset-5">
-      1 {from} = {data.rate} {to}
+      1 {from} = {rate} {to}
     </p>
   );
 }

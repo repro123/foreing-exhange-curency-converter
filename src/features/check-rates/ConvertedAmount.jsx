@@ -1,18 +1,7 @@
-import { getExchangeRate } from "@/lib/exchange-rate";
+import { formatNumber } from "@/lib/utils";
 
-async function ConvertedAmount({ from, to, amount }) {
-  const data = await getExchangeRate(from, to, amount);
-
-  const formatted =
-    data.convertedAmount > 1_000_000_000
-      ? new Intl.NumberFormat("en-US", {
-          notation: "compact",
-          maximumFractionDigits: 2,
-        }).format(data.convertedAmount)
-      : data.convertedAmount.toLocaleString("en-US", {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        });
+function ConvertedAmount({ convertedAmount }) {
+  const formatted = formatNumber(convertedAmount);
 
   return (
     <div className="flex-1 min-w-0 overflow-x-auto no-scrollbar has-focus:outline-0 has-focus:border-primary has-focus:rounded-lg border-2 border-transparent">

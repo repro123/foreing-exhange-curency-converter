@@ -85,3 +85,15 @@ export function shortenCurrencyName(name) {
 
   return `${initials} ${currencyUnit}`;
 }
+
+export function formatNumber(number) {
+  return number > 1_000_000_000
+    ? new Intl.NumberFormat("en-US", {
+        notation: "compact",
+        maximumFractionDigits: 2,
+      }).format(number)
+    : number.toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+}

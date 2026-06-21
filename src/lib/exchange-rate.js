@@ -5,10 +5,7 @@ export const getExchangeRate = async (from, to, amount) => {
     next: { revalidate: 500 },
   });
 
-  const converted = (amount * res.rate).toFixed(2);
-
   return {
     ...res,
-    convertedAmount: Number(converted),
   };
 };
