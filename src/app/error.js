@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect } from "react";
 import LogoSVG from "@/components/SVGs/LogoSVG";
 
@@ -49,12 +48,12 @@ export default function Error({ error, unstable_retry }) {
                 >
                   Try again
                 </button>
-                <Link
-                  href="/"
+                <button
+                  onClick={() => (window.location.href = "/")}
                   className="preset-5-medium inline-flex min-h-12 items-center justify-center rounded-md border border-white/15 px-5 text-foreground transition hover:border-primary hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
                 >
                   Back to dashboard
-                </Link>
+                </button>
               </div>
 
               <div className="mt-10 grid gap-3 border-t border-white/10 pt-6 text-nav sm:grid-cols-3">

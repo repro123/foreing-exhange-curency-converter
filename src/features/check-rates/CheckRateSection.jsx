@@ -3,13 +3,12 @@ import { Suspense } from "react";
 import { getCurrencies } from "@/lib/currencies";
 import { POPULAR_CURRENCIES } from "@/data/constants";
 
-import { Button } from "@/components/ui/button";
-
 import InputCard from "@/features/check-rates/InputCard";
 import SwapBtn from "@/features/check-rates/SwapBtn";
 import ConvertedAmount from "@/features/check-rates/ConvertedAmount";
 import RateSummary from "@/features/check-rates/RateSummary";
 import FavoriteToggleBtn from "@/features/favorites/FavoriteToggleBtn";
+import LogBtn from "@/features/logs/LogBtn";
 
 async function CheckRateSection({ searchParams }) {
   const currencies = await getCurrencies();
@@ -70,13 +69,7 @@ async function CheckRateSection({ searchParams }) {
           <div className="flex items-center gap-4">
             <FavoriteToggleBtn />
 
-            <Button
-              size="lg"
-              variant="outline"
-              className="uppercase preset-5-medium"
-            >
-              Log conversion
-            </Button>
+            <LogBtn />
           </div>
         </div>
       </div>
