@@ -28,10 +28,13 @@ function CurrencySelect({
   const { from, to, updateParams } = useCurrencyParams();
 
   const selectedCode = paramKey === "from" ? from : to;
+  const disabledCode = paramKey === "from" ? to : from;
 
   const selected = currencies.find((c) => c.iso_code === selectedCode) ?? null;
 
   const handleChange = (isoCode) => {
+    if (isoCode === disabledCode) return;
+
     updateParams({
       [paramKey]: isoCode,
     });
@@ -88,20 +91,40 @@ function CurrencySelect({
                 <span>{group.value}</span> <span>{group.items.length}</span>
               </ComboboxLabel>
               <ComboboxCollection>
-                {(item) => (
-                  <ComboboxItem key={item.iso_code} value={item.iso_code}>
-                    <Image
-                      src={`/flags/${getCurrencyFlag(item.iso_code)}.webp`}
-                      alt={`${item.name} flag`}
-                      width={12}
-                      height={12}
-                    />{" "}
-                    <span className="preset-4">{item.iso_code}</span>{" "}
-                    <span className="preset-5 text-nav">
-                      {shortenCurrencyName(item.name)}
-                    </span>
-                  </ComboboxItem>
-                )}
+                {(item) => {
+                  const isDisabled = item.iso_code === disabledCode;
+
+                  return (
+                    <ComboboxItem
+                      key={item.iso_code}
+                      value={item.iso_code}
+                      disabled={isDisabled}
+                      aria-label={
+                        isDisabled
+                          ? `${item.iso_code} is already selected as the ${
+                              paramKey === "from" ? "receive" : "send"
+                            } currency`
+                          : undefined
+                      }
+                    >
+                      <Image
+                        src={`/flags/${getCurrencyFlag(item.iso_code)}.webp`}
+                        alt={`${item.name} flag`}
+                        width={12}
+                        height={12}
+                      />{" "}
+                      <span className="preset-4">{item.iso_code}</span>{" "}
+                      <span className="preset-5 text-nav">
+                        {shortenCurrencyName(item.name)}
+                      </span>
+                      {isDisabled && (
+                        <span className="preset-6 ml-auto text-nav">
+                          Selected
+                        </span>
+                      )}
+                    </ComboboxItem>
+                  );
+                }}
               </ComboboxCollection>
               {index < allCurrencies.length - 1 && <ComboboxSeparator />}
             </ComboboxGroup>
