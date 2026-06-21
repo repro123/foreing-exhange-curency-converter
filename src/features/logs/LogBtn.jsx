@@ -8,7 +8,7 @@ function LogBtn({ convertedAmount }) {
   const [log, setLog, hydrated] = useLocalStorage("logged-conversions", []);
   const { from, to, amount } = useCurrencyParams();
 
-  const id = `${from}-${amount}-${to}-${formattedAmount}`;
+  const id = `${from}-${amount}-${to}-${convertedAmount}`;
   const isLogged = hydrated && log.some((f) => f.id === id);
 
   function handleLog() {
