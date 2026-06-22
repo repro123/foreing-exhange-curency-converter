@@ -1,6 +1,7 @@
 import MainContainer from "@/components/layout/containers/MainContainer";
 import CheckRateSection from "@/features/check-rates/CheckRateSection";
 import CheckRatesSectionSkeleton from "@/features/check-rates/CheckRatesSectionSkeleton";
+import TabsSection from "@/features/tabs/TabsSection";
 import { Suspense } from "react";
 
 function Main({ searchParams }) {
@@ -11,7 +12,7 @@ function Main({ searchParams }) {
           <CheckRateSection searchParams={searchParams} />
         </Suspense>
 
-        <section></section>
+        <TabsSection searchParams={searchParams} />
       </MainContainer>
     </main>
   );
