@@ -97,3 +97,37 @@ export function formatNumber(number) {
         maximumFractionDigits: 2,
       });
 }
+
+export function formatRelativeDate(date) {
+  const now = new Date();
+  const targetDate = new Date(date);
+  const diffMs = now.getTime() - targetDate.getTime();
+  const diffSecs = Math.floor(diffMs / 1000);
+  const diffMins = Math.floor(diffSecs / 60);
+  const diffHours = Math.floor(diffMins / 60);
+  const diffDays = Math.floor(diffHours / 24);
+
+  if (diffMins < 1) {
+    return "just now";
+  }
+
+  if (diffMins < 60) {
+    return `${diffMins}M`;
+  }
+
+  if (diffHours < 24) {
+    return `${diffHours}H`;
+  }
+
+  if (diffDays < 7) {
+    return `${diffDays}D`;
+  }
+
+  const options = {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  };
+
+  return targetDate.toLocaleDateString("en-US", options);
+}
