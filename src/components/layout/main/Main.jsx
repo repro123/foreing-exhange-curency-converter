@@ -12,7 +12,7 @@ function Main({ searchParams }) {
           <CheckRateSection searchParams={searchParams} />
         </Suspense>
 
-        <TabsSection searchParams={searchParams} />
+        <TabsSection />
       </MainContainer>
     </main>
   );

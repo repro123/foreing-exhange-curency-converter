@@ -1,6 +1,6 @@
 "use client";
 
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Select,
   SelectContent,
@@ -18,52 +18,76 @@ const items = [
   { label: "Logs", value: "logs" },
 ];
 
-function TabsSection({ searchParams }) {
-  const activeTab = searchParams?.tab || "history";
-
+function TabsSection() {
   const urlParams = useSearchParams();
   const router = useRouter();
-  console.log(urlParams);
 
+  const activeTab = urlParams.get("tab") || "history";
   const handleTabChange = (value) => {
-    console.log(value);
     const params = new URLSearchParams(urlParams.toString());
 
-    params.set("tab", value);
-
+    if (value === "history") {
+      params.delete("tab");
+    } else {
+      params.set("tab", value);
+    }
     router.push(`?${params.toString()}`);
   };
 
   return (
     <section className="mt-8 pb-8">
-      <div className="md:hidden">
-        <Select items={items} value={activeTab} onValueChange={handleTabChange}>
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="History" />
-          </SelectTrigger>
-          <SelectContent alignItemWithTrigger={false}>
-            <SelectGroup>
-              {items.map((item) => (
-                <SelectItem key={item.value} value={item.value}>
-                  {item.label}
-                </SelectItem>
-              ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-      </div>
+      <Tabs value={activeTab} onValueChange={handleTabChange}>
+        <div className="md:hidden">
+          <Select
+            items={items}
+            value={activeTab}
+            onValueChange={handleTabChange}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="History" />
+            </SelectTrigger>
+            <SelectContent alignItemWithTrigger={false}>
+              <SelectGroup>
+                {items.map((item) => (
+                  <SelectItem
+                    key={item.value}
+                    value={item.value}
+                    className="preset-3"
+                  >
+                    {item.label}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
 
-      <div className="hidden md:block">
-        <Tabs value={activeTab} onValueChange={handleTabChange}>
+        <div className="hidden md:block">
           <TabsList variant="line">
             {items.map((item) => (
-              <TabsTrigger key={item.value} value={item.value}>
+              <TabsTrigger
+                key={item.value}
+                value={item.value}
+                className="preset-3"
+              >
                 {item.label}
               </TabsTrigger>
             ))}
           </TabsList>
-        </Tabs>
-      </div>
+        </div>
+        <TabsContent value="history" className="mt-8">
+          History
+        </TabsContent>
+        <TabsContent value="compare" className="mt-8">
+          Compare
+        </TabsContent>
+        <TabsContent value="favorites" className="mt-8">
+          Fvorites
+        </TabsContent>
+        <TabsContent value="logs" className="mt-8">
+          Logs
+        </TabsContent>
+      </Tabs>
     </section>
   );
 }
