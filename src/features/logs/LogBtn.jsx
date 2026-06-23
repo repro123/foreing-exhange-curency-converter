@@ -2,33 +2,39 @@
 
 import { Button } from "@/components/ui/button";
 import { useCurrencyParams } from "@/hooks/useCurrencyParams";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
+
+import { useLogsStore } from "@/store/useLogsStore";
 
 function LogBtn({ convertedAmount }) {
-  const [log, setLog, hydrated] = useLocalStorage("logged-conversions", []);
+  const logs = useLogsStore((state) => state.logs);
+  const addLog = useLogsStore((state) => state.addLog);
+  const hydrated = useLogsStore((state) => state.hydrated);
   const { from, to, amount } = useCurrencyParams();
 
   const id = `${from}-${amount}-${to}-${convertedAmount}`;
-  const isLogged = hydrated && log.some((f) => f.id === id);
+  const logged = hydrated && logs.some((log) => log.id === id);
 
   function handleLog() {
-    if (isLogged) return;
-    setLog((prev) => [
-      ...prev,
-      { from, to, amount, convertedAmount, id, date: new Date().toISOString() },
-    ]);
+    addLog({
+      from,
+      to,
+      amount,
+      convertedAmount,
+      id,
+      date: new Date().toISOString(),
+    });
   }
 
   return (
-    <div className={isLogged ? "cursor-not-allowed" : ""}>
+    <div className={logged ? "cursor-not-allowed" : ""}>
       <Button
         size="lg"
         variant="outline"
         className="uppercase preset-5-medium"
-        onClick={handleLog}
-        disabled={isLogged}
+        onClick={() => handleLog()}
+        disabled={logged}
       >
-        {isLogged ? "Logged" : "Log conversion"}
+        {logged ? "Logged" : "Log conversion"}
       </Button>
     </div>
   );

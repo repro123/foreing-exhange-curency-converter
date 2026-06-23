@@ -7,20 +7,35 @@ import {
   SelectGroup,
   SelectItem,
   SelectTrigger,
-  SelectValue,
 } from "@/components/ui/select";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
-const items = [
-  { label: "History", value: "history" },
-  { label: "Compare", value: "compare" },
-  { label: "Favorites", value: "favorites" },
-  { label: "Logs", value: "logs" },
-];
+import LogPanel from "@/features/logs/LogPanel";
+import { useLogsStore } from "@/store/useLogsStore";
 
 function TabsSection() {
   const urlParams = useSearchParams();
   const router = useRouter();
+
+  const [favorites, , favHydrated] = useLocalStorage("favorite-currencies", []);
+  const logs = useLogsStore((state) => state.logs);
+  const logsHydrated = useLogsStore((state) => state.hydrated);
+
+  const items = [
+    { label: "History", value: "history" },
+    { label: "Compare", value: "compare" },
+    {
+      label: "Favorites",
+      value: "favorites",
+      count: favHydrated ? favorites.length : null,
+    },
+    {
+      label: "Logs",
+      value: "logs",
+      count: logsHydrated ? logs.length : null,
+    },
+  ];
 
   const activeTab = urlParams.get("tab") || "history";
   const handleTabChange = (value) => {
@@ -34,6 +49,8 @@ function TabsSection() {
     router.push(`?${params.toString()}`);
   };
 
+  const selectedItem = items.find((item) => item.value === activeTab);
+
   return (
     <section className="mt-8 pb-8">
       <Tabs value={activeTab} onValueChange={handleTabChange}>
@@ -44,7 +61,14 @@ function TabsSection() {
             onValueChange={handleTabChange}
           >
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="History" />
+              <span className="flex items-center gap-2">
+                <span>{selectedItem?.label}</span>
+                {selectedItem?.count != null && selectedItem?.count > 0 && (
+                  <span className="preset-6 bg-primary/20 text-primary rounded-full p-1">
+                    {selectedItem.count}
+                  </span>
+                )}
+              </span>
             </SelectTrigger>
             <SelectContent alignItemWithTrigger={false}>
               <SelectGroup>
@@ -54,7 +78,12 @@ function TabsSection() {
                     value={item.value}
                     className="preset-3"
                   >
-                    {item.label}
+                    <span className="flex items-center gap-2">
+                      {item.label}
+                      {item.count != null && item.count > 0 && (
+                        <span className="preset-6 text-nav">{item.count}</span>
+                      )}
+                    </span>
                   </SelectItem>
                 ))}
               </SelectGroup>
@@ -70,22 +99,30 @@ function TabsSection() {
                 value={item.value}
                 className="preset-3"
               >
-                {item.label}
+                <span className="flex items-center gap-1">
+                  {item.label}
+                  {item.count != null && item.count > 0 && (
+                    <span className="preset-6 bg-primary/20 text-primary rounded-full p-1">
+                      {item.count}
+                    </span>
+                  )}
+                </span>
               </TabsTrigger>
             ))}
           </TabsList>
         </div>
-        <TabsContent value="history" className="mt-8">
+        <TabsContent value="history" className="mt-4">
           History
         </TabsContent>
-        <TabsContent value="compare" className="mt-8">
+        <TabsContent value="compare" className="mt-4">
           Compare
         </TabsContent>
-        <TabsContent value="favorites" className="mt-8">
+        <TabsContent value="favorites" className="mt-4">
           Fvorites
         </TabsContent>
-        <TabsContent value="logs" className="mt-8">
-          Logs
+
+        <TabsContent value="logs" className="mt-4">
+          <LogPanel />
         </TabsContent>
       </Tabs>
     </section>
