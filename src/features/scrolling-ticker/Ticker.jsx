@@ -8,7 +8,7 @@ function Ticker({ item }) {
       <span
         className={`${item.change >= 0 ? "text-success" : "text-destructive"} flex gap-2 items-center`}
       >
-        <span>{item.change >= 0 ? "▲" : "▼"}</span>
+        <span aria-hidden="true">{item.change >= 0 ? "▲" : "▼"}</span>
         <span>
           {item.change > 0 && "+"}
           {item.change < 0 && "-"}

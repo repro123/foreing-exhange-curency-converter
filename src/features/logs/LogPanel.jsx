@@ -30,7 +30,7 @@ function LogPanel() {
       <div className="flex flex-col gap-4 w-full md:flex-row md:items-center md:justify-between">
         <p className="uppercase preset-3-medium">conversion log</p>
         <div className="flex items-center max-md:justify-between gap-2">
-          <p className="preset-5 text-nav">{logs.length} logged</p>{" "}
+          <p className="preset-5 text-nav uppercase">{logs.length} logged</p>{" "}
           <div className="flex items-center gap-2">
             {" "}
             <Button variant="destructive" onClick={removeAll}>
