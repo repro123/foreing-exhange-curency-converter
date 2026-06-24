@@ -5,7 +5,7 @@ import { LogPanelTable } from "@/features/logs/LogPanelTable";
 
 import { useLogsStore } from "@/store/useLogsStore";
 import { Download } from "lucide-react";
-import { ClipboardList } from "lucide-react";
+import EmptyPanelState from "@/features/tabs/EmptyPanelState";
 
 function LogPanel() {
   const logs = useLogsStore((state) => state.logs);
@@ -18,20 +18,10 @@ function LogPanel() {
 
   if (!logs.length) {
     return (
-      <div className="flex flex-col items-center justify-center gap-3 py-8 text-center bg-card-base rounded-2xl">
-        <div className="flex size-14 items-center justify-center rounded-full bg-foreground/5">
-          <ClipboardList className="size-6 text-foreground/40" />
-        </div>
-        <div className="flex flex-col gap-2">
-          <p className="preset-3-medium text-foreground">
-            No conversions logged
-          </p>
-          <p className="preset-5 text-nav">
-            Your logged conversions will appear here, and are private to this
-            browser.
-          </p>
-        </div>
-      </div>
+      <EmptyPanelState
+        heading="No conversions logged"
+        paragraph="Your logged conversions will appear here, and are private to this browser."
+      />
     );
   }
 

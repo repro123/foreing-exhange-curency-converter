@@ -1,3 +1,4 @@
+import EmptyPanelState from "@/features/tabs/EmptyPanelState";
 import PanelSkeleton from "@/features/tabs/PanelSkeleton";
 import { useFavoritesStore } from "@/store/useFavoritesStore";
 
@@ -12,28 +13,16 @@ function FavoritesPanel() {
 
   if (!favHydrated) return <PanelSkeleton />;
 
+  if (!favorites.length) {
+    return (
+      <EmptyPanelState
+        heading="No pinned pairs yet"
+        paragraph="Pin a pair to track its rate here. Tap the star icon on any conversion or comparison row."
+      />
+    );
+  }
+
   return <div>favorites</div>;
 }
 
 export default FavoritesPanel;
-
-function LogPanel() {
-  if (!logs.length) {
-    return (
-      <div className="flex flex-col items-center justify-center gap-3 py-8 text-center bg-card-base rounded-2xl">
-        <div className="flex size-14 items-center justify-center rounded-full bg-foreground/5">
-          <ClipboardList className="size-6 text-foreground/40" />
-        </div>
-        <div className="flex flex-col gap-2">
-          <p className="preset-3-medium text-foreground">
-            No conversions logged
-          </p>
-          <p className="preset-5 text-nav">
-            Your logged conversions will appear here, and are private to this
-            browser.
-          </p>
-        </div>
-      </div>
-    );
-  }
-}
