@@ -1,8 +1,8 @@
-import ArrowRight from "@/components/SVGs/ArrowRight";
-import DeleteIcon from "@/components/SVGs/DeleteIcon";
 import { Button } from "@/components/ui/button";
+import LogPanelList from "@/features/logs/LogPanelList";
 import LogPanelSkeleton from "@/features/logs/LogPanelSkeleton";
-import { formatNumber, formatRelativeDate } from "@/lib/utils";
+import { LogPanelTable } from "@/features/logs/LogPanelTable";
+
 import { useLogsStore } from "@/store/useLogsStore";
 import { Download } from "lucide-react";
 import { ClipboardList } from "lucide-react";
@@ -54,37 +54,13 @@ function LogPanel() {
         </div>
       </div>
 
-      <ul className="mt-8 grid gap-4 ">
-        {logs.map((log, i) => (
-          <li
-            key={log.id}
-            className="bg-card border rounded-xl p-2 py-4 flex items-center gap-4 justify-between"
-          >
-            <div className="preset-4 flex flex-col gap-2 md:flex-row md:items-center md:gap-4">
-              <p className="text-nav md:w-[8ch] md:shrink-0">
-                {formatRelativeDate(log.date)}
-              </p>
-              <p className="flex items-center gap-2">
-                <span>{log.from}</span> <ArrowRight className="text-nav" />{" "}
-                <span>{log.to}</span>
-              </p>
-            </div>
+      <div className="mt-8 md:hidden">
+        <LogPanelList logs={logs} removeLog={removeLog} />
+      </div>
 
-            <div className="flex items-center gap-2 md:gap-4">
-              <div className="preset-3 flex flex-col gap-2 md:flex-row md:gap-4 text-right">
-                <p className="text-card-heading">{log.amount}</p>
-                <p className="text-primary">
-                  {formatNumber(log.convertedAmount)}
-                </p>
-              </div>
-
-              <Button variant="destructive" onClick={() => removeLog(log.id)}>
-                <DeleteIcon />
-              </Button>
-            </div>
-          </li>
-        ))}
-      </ul>
+      <div className="mt-4 hidden md:block">
+        <LogPanelTable logs={logs} removeLog={removeLog} />
+      </div>
     </div>
   );
 }
