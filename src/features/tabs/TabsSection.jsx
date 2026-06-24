@@ -8,19 +8,24 @@ import {
   SelectItem,
   SelectTrigger,
 } from "@/components/ui/select";
+
 import { useRouter, useSearchParams } from "next/navigation";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 import LogPanel from "@/features/logs/LogPanel";
+import FavoritesPanel from "@/features/favorites/FavoritesPanel";
+
 import { useLogsStore } from "@/store/useLogsStore";
+import { useFavoritesStore } from "@/store/useFavoritesStore";
 
 function TabsSection() {
   const urlParams = useSearchParams();
   const router = useRouter();
 
-  const [favorites, , favHydrated] = useLocalStorage("favorite-currencies", []);
   const logs = useLogsStore((state) => state.logs);
   const logsHydrated = useLogsStore((state) => state.hydrated);
+
+  const favorites = useFavoritesStore((state) => state.favorites);
+  const favoritesHydrated = useFavoritesStore((state) => state.hydrated);
 
   const items = [
     { label: "History", value: "history" },
@@ -28,7 +33,7 @@ function TabsSection() {
     {
       label: "Favorites",
       value: "favorites",
-      count: favHydrated ? favorites.length : null,
+      count: favoritesHydrated ? favorites.length : null,
     },
     {
       label: "Logs",
@@ -117,8 +122,9 @@ function TabsSection() {
         <TabsContent value="compare" className="mt-4">
           Compare
         </TabsContent>
+
         <TabsContent value="favorites" className="mt-4">
-          Fvorites
+          <FavoritesPanel />
         </TabsContent>
 
         <TabsContent value="logs" className="mt-4">

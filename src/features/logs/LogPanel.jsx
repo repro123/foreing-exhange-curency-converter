@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import LogPanelList from "@/features/logs/LogPanelList";
-import LogPanelSkeleton from "@/features/logs/LogPanelSkeleton";
+import PanelSkeleton from "@/features/tabs/PanelSkeleton";
 import { LogPanelTable } from "@/features/logs/LogPanelTable";
 
 import { useLogsStore } from "@/store/useLogsStore";
@@ -14,7 +14,7 @@ function LogPanel() {
   const removeAll = useLogsStore((state) => state.removeAllLog);
   const exportLog = useLogsStore((state) => state.exportAsCSV);
 
-  if (!logsHydrated) return <LogPanelSkeleton />;
+  if (!logsHydrated) return <PanelSkeleton />;
 
   if (!logs.length) {
     return (
