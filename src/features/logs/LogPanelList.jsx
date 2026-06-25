@@ -29,7 +29,11 @@ function LogPanelList({ logs, removeLog }) {
               </p>
             </div>
 
-            <Button variant="destructive" onClick={() => removeLog(log.id)}>
+            <Button
+              variant="destructive"
+              onClick={() => removeLog(log.id)}
+              aria-label={`Remove ${log.from} to ${log.to} from log`}
+            >
               <DeleteIcon />
             </Button>
           </div>
