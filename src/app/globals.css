@@ -8,7 +8,7 @@
   --primary: #5a7a00;
   --primary-dark: #283300;
   --success: #1a7a00;
-  --destructive: #ff4141;
+  --destructive: oklch(0.577 0.245 27.325);
   --foreground: #0a0a0a;
   --background: #ffffff;
   --nav: #202022;
@@ -56,7 +56,7 @@
   --card-base: #171719;
   --card-heading: #c6c6c6;
   --success: #42eb05;
-  --destructive: oklch(0.704 0.191 22.216);
+  --destructive: #ff4141;
 
   --card-foreground: oklch(0.985 0 0);
   --popover-foreground: oklch(0.985 0 0);

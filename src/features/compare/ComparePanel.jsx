@@ -11,6 +11,7 @@ function ComparePanel({ rates, from, amount }) {
       />
     );
   }
+
   return (
     <div className="bg-card-base rounded-2xl p-4">
       <div className="flex flex-col gap-4 w-full md:flex-row md:items-center md:justify-between">

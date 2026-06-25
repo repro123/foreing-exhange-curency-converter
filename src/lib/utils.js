@@ -131,3 +131,36 @@ export function formatRelativeDate(date) {
 
   return targetDate.toLocaleDateString("en-US", options);
 }
+
+export function getDateRange(period) {
+  const end = new Date();
+  const start = new Date();
+
+  switch (period) {
+    case "1D":
+      start.setDate(end.getDate() - 1);
+      break;
+    case "1W":
+      start.setDate(end.getDate() - 7);
+      break;
+    case "1M":
+      start.setMonth(end.getMonth() - 1);
+      break;
+    case "3M":
+      start.setMonth(end.getMonth() - 3);
+      break;
+    case "1Y":
+      start.setFullYear(end.getFullYear() - 1);
+      break;
+    case "5Y":
+      start.setFullYear(end.getFullYear() - 5);
+      break;
+    default:
+      start.setMonth(end.getMonth() - 1);
+  }
+
+  return {
+    startDate: start.toISOString().split("T")[0],
+    endDate: end.toISOString().split("T")[0],
+  };
+}

@@ -17,7 +17,7 @@ import FavoritesPanel from "@/features/favorites/FavoritesPanel";
 import { useLogsStore } from "@/store/useLogsStore";
 import { useFavoritesStore } from "@/store/useFavoritesStore";
 
-function TabsSection({ comparePanel }) {
+function TabsSection({ comparePanel, historyPanel }) {
   const urlParams = useSearchParams();
   const router = useRouter();
 
@@ -117,7 +117,7 @@ function TabsSection({ comparePanel }) {
           </TabsList>
         </div>
         <TabsContent value="history" className="mt-4">
-          History
+          {historyPanel}
         </TabsContent>
 
         <TabsContent value="compare" className="mt-4">
