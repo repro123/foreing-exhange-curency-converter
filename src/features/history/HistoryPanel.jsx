@@ -1,4 +1,5 @@
 import HistoryCards from "@/features/history/HistoryCards";
+import HistoryPeriodButtons from "@/features/history/HistoryPeriodButtons";
 import EmptyPanelState from "@/features/tabs/EmptyPanelState";
 
 function HistoryPanel({ series, fromCurrency, toCurrency }) {
@@ -13,8 +14,10 @@ function HistoryPanel({ series, fromCurrency, toCurrency }) {
 
   return (
     <div>
-      <div className="flex flex-col gap-4 lg:justify-between lg:gap-8 lg:items-center xl:gap-12">
+      <div className="flex flex-col gap-4 lg:flex-row lg:justify-between lg:gap-8 lg:items-center xl:gap-12">
         <HistoryCards series={series} />
+
+        <HistoryPeriodButtons />
       </div>
 
       <div></div>
