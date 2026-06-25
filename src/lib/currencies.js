@@ -7,3 +7,11 @@ export const getCurrencies = async () => {
 
   return res;
 };
+
+export const getSingleCurrency = async (cur) => {
+  const res = await serverApi(`/currency/${cur}`, {
+    next: { revalidate: 86400 },
+  });
+
+  return res;
+};

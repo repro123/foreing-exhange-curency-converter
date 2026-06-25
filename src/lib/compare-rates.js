@@ -8,7 +8,8 @@ export const getCompareRates = async (base, amount) => {
     next: { revalidate: 3600 },
   });
 
-  console.log("SERVER", rates);
+  console.log(rates);
+
   return rates.map((r) => ({
     ...r,
     convertedAmount: Number((amount * r.rate).toFixed(2)),
