@@ -1,4 +1,5 @@
 import HistoryCards from "@/features/history/HistoryCards";
+import HistoryChart from "@/features/history/HistoryChart";
 import HistoryPeriodButtons from "@/features/history/HistoryPeriodButtons";
 import EmptyPanelState from "@/features/tabs/EmptyPanelState";
 
@@ -20,7 +21,13 @@ function HistoryPanel({ series, fromCurrency, toCurrency }) {
         <HistoryPeriodButtons />
       </div>
 
-      <div></div>
+      <div className="mt-8">
+        <HistoryChart
+          series={series}
+          fromCurrency={fromCurrency}
+          toCurrency={toCurrency}
+        />
+      </div>
     </div>
   );
 }
