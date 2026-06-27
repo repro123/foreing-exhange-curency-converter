@@ -199,3 +199,25 @@ export function formatXAxisDate(date, period) {
       });
   }
 }
+
+export function formatDateTime() {
+  const now = new Date();
+  const timeZoneAbbr = now
+    .toLocaleTimeString("en-US", { timeZoneName: "short" })
+    .split(" ")
+    .pop();
+
+  return (
+    now
+      .toLocaleDateString("en-US", { month: "short", day: "numeric" })
+      .toUpperCase() +
+    " · " +
+    now.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    }) +
+    " " +
+    timeZoneAbbr
+  );
+}

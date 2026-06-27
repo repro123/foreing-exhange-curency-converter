@@ -1,28 +1,8 @@
 "use client";
 
+import { Skeleton } from "@/components/ui/skeleton";
 import { useState, useEffect } from "react";
-
-function formatDateTime() {
-  const now = new Date();
-  const timeZoneAbbr = now
-    .toLocaleTimeString("en-US", { timeZoneName: "short" })
-    .split(" ")
-    .pop();
-
-  return (
-    now
-      .toLocaleDateString("en-US", { month: "short", day: "numeric" })
-      .toUpperCase() +
-    " · " +
-    now.toLocaleTimeString("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false,
-    }) +
-    " " +
-    timeZoneAbbr
-  );
-}
+import { formatDateTime } from "@/lib/utils";
 
 function CurrentDateTime() {
   const [label, setLabel] = useState("");
@@ -31,6 +11,14 @@ function CurrentDateTime() {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setLabel(formatDateTime());
   }, []);
+
+  if (!label) {
+    return (
+      <span className="inline-block h-3 w-24 rounded bg-muted overflow-hidden">
+        <Skeleton className="w-fill h-full" />
+      </span>
+    );
+  }
 
   return <span suppressHydrationWarning>{label}</span>;
 }
