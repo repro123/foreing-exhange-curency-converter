@@ -1,5 +1,8 @@
 "use client";
 
+import { HISTORY_PERIODS } from "@/data/constants";
+import { useSearchParams } from "next/navigation";
+
 function HistoryTooltip({
   active,
   payload,
@@ -8,6 +11,12 @@ function HistoryTooltip({
   toCurrency,
   percentChange,
 }) {
+  const searchParams = useSearchParams();
+  const period = searchParams.get("period") ?? "1M";
+  const periodString = HISTORY_PERIODS.find((p) => p.value === period)[
+    "aria-label"
+  ];
+
   if (!active || !payload?.length) return null;
 
   const rate = payload[0].value;
@@ -50,7 +59,9 @@ function HistoryTooltip({
           {Math.abs(percentChange).toFixed(2)}%
         </span>
 
-        <span className="preset-5 text-nav">Change over selected period</span>
+        <span className="preset-5 text-nav">
+          Change over <span className="lowercase">{periodString}</span>
+        </span>
       </p>
     </div>
   );
