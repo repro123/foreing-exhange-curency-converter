@@ -1,5 +1,7 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
+
 import { AreaChart, Area, CartesianGrid, XAxis, YAxis } from "recharts";
 
 import {
@@ -13,10 +15,14 @@ import { ChartContainer, ChartTooltip } from "@/components/ui/chart";
 
 import CurrentDateTime from "@/features/history-chart-components/CurrentDateTime";
 import HistoryTooltip from "@/features/history-chart-components/HistoryTooltip";
+import { formatXAxisDate } from "@/lib/utils";
 
 export const description = "A linear line chart";
 
 function HistoryChart({ series, fromCurrency, toCurrency }) {
+  const searchParams = useSearchParams();
+  const period = searchParams.get("period") ?? "1M";
+
   const openRate = series[0].rate;
   const lastRate = series[series.length - 1].rate;
   const percentChange = ((lastRate - openRate) / openRate) * 100;
@@ -37,24 +43,28 @@ function HistoryChart({ series, fromCurrency, toCurrency }) {
         </CardDescription>
       </CardHeader>
       <CardContent className="pt-4">
-        <ChartContainer config={chartConfig} className="h-80 w-full">
+        <ChartContainer config={chartConfig} className="h-120 w-full">
           <AreaChart
             accessibilityLayer
             data={series}
             margin={{
               left: 12,
               right: 12,
+              bottom: 20,
             }}
           >
             <defs>
               <linearGradient id="rateGradient" x1="0" y1="0" x2="0" y2="1">
-                {/* top of gradient: primary color at 20% opacity */}
                 <stop
                   offset="5%"
                   stopColor="var(--color-primary)"
-                  stopOpacity={0.2}
+                  stopOpacity={1}
                 />
-                {/* bottom of gradient: fully transparent */}
+                <stop
+                  offset="25%"
+                  stopColor="var(--color-primary)"
+                  stopOpacity={0.6}
+                />
                 <stop
                   offset="95%"
                   stopColor="var(--color-primary)"
@@ -71,31 +81,24 @@ function HistoryChart({ series, fromCurrency, toCurrency }) {
               dataKey="date"
               tickLine={false}
               axisLine={false}
-              tickMargin={8}
-              tickFormatter={(value) =>
-                new Date(value).toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                })
-              }
+              tickMargin={25}
+              interval="preserveStartEnd"
+              minTickGap={40}
+              angle={-45}
+              padding={{ left: 15, right: 15 }}
+              height={70}
+              tickFormatter={(value) => formatXAxisDate(value, period)}
             />
             <YAxis
               tickLine={false}
               axisLine={false}
               tickMargin={8}
-              width={70} // width of the axis label area
+              width={70}
               tick={{ fill: "var(--color-foreground)", opacity: 0.4 }}
-              domain={["auto", "auto"]} // auto-scale min/max to your data
-              tickFormatter={(value) => value.toFixed(4)} // show 4 decimal places
+              domain={["auto", "auto"]}
+              tickFormatter={(value) => value.toFixed(4)}
             />
 
-            {/* {
-                // the vertical crosshair line on hover
-                stroke: "var(--color-foreground)",
-                strokeOpacity: 0.2,
-                strokeWidth: 1,
-                strokeDasharray: "4 4", // dashed line
-              }  */}
             <ChartTooltip
               cursor={true}
               content={(props) => (
@@ -104,6 +107,7 @@ function HistoryChart({ series, fromCurrency, toCurrency }) {
                   fromCurrency={fromCurrency}
                   toCurrency={toCurrency}
                   percentChange={percentChange}
+                  period={period}
                 />
               )}
             />

@@ -164,3 +164,38 @@ export function getDateRange(period) {
     endDate: end.toISOString().split("T")[0],
   };
 }
+
+export function formatXAxisDate(date, period) {
+  const d = new Date(date);
+
+  switch (period) {
+    case "1W":
+      return d.toLocaleDateString("en-US", {
+        weekday: "short",
+      });
+
+    case "1M":
+      return d.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+      });
+
+    case "6M":
+      return d.toLocaleDateString("en-US", {
+        month: "short",
+      });
+
+    case "1Y":
+    case "5Y":
+      return d.toLocaleDateString("en-US", {
+        month: "short",
+        year: "numeric",
+      });
+
+    default:
+      return d.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+      });
+  }
+}

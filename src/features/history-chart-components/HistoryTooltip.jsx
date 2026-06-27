@@ -1,7 +1,4 @@
-"use client";
-
 import { HISTORY_PERIODS } from "@/data/constants";
-import { useSearchParams } from "next/navigation";
 
 function HistoryTooltip({
   active,
@@ -10,14 +7,13 @@ function HistoryTooltip({
   fromCurrency,
   toCurrency,
   percentChange,
+  period,
 }) {
-  const searchParams = useSearchParams();
-  const period = searchParams.get("period") ?? "1M";
+  if (!active || !payload?.length) return null;
+
   const periodString = HISTORY_PERIODS.find((p) => p.value === period)[
     "aria-label"
   ];
-
-  if (!active || !payload?.length) return null;
 
   const rate = payload[0].value;
 
