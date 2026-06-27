@@ -17,8 +17,6 @@ import CurrentDateTime from "@/features/history-chart-components/CurrentDateTime
 import HistoryTooltip from "@/features/history-chart-components/HistoryTooltip";
 import { formatXAxisDate } from "@/lib/utils";
 
-export const description = "A linear line chart";
-
 function HistoryChart({ series, fromCurrency, toCurrency }) {
   const searchParams = useSearchParams();
   const period = searchParams.get("period") ?? "1M";
@@ -47,6 +45,8 @@ function HistoryChart({ series, fromCurrency, toCurrency }) {
           <AreaChart
             accessibilityLayer
             data={series}
+            title={`${fromCurrency}/${toCurrency} exchange rate history`}
+            desc={`Historical exchange rate chart for ${fromCurrency} to ${toCurrency}`}
             margin={{
               left: 12,
               right: 12,
