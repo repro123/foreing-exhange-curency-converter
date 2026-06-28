@@ -14,9 +14,6 @@ async function HistoryPanelWrapper({ fromCurrency, toCurrency, period }) {
     group,
   );
 
-  console.log(startDate, endDate);
-  console.log(series);
-
   return (
     <HistoryPanel
       series={series}
