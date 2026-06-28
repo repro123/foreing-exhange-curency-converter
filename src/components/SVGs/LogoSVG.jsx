@@ -6,6 +6,8 @@ function LogoSVG() {
       height="26"
       fill="none"
       viewBox="0 0 139 26"
+      focusable="false"
+      aria-hidden="true"
     >
       <path
         fill="var(--color-primary)"

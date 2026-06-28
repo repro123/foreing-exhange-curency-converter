@@ -6,12 +6,16 @@ import ThemeToggle from "@/features/theme/ThemeToggle";
 
 import { Suspense } from "react";
 import HeaderContainer from "@/components/layout/containers/HeaderContainer";
+import Link from "next/link";
 
 function Header() {
   return (
     <header className="p-4">
       <HeaderContainer>
-        <LogoSVG />
+        <Link href="/">
+          <span className="sr-only">Home</span>
+          <LogoSVG />
+        </Link>
 
         <div className="preset-6 md:preset-4 flex items-center gap-4">
           <div className="flex items-center gap-2 text-nav">
