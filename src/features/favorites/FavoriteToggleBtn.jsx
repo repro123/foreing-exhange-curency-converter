@@ -14,7 +14,7 @@ function FavoriteToggleBtn() {
   const removeFavorite = useFavoritesStore((state) => state.removeFavorite);
   const hydrated = useFavoritesStore((state) => state.hydrated);
 
-  if (!hydrated) return null;
+  // if (!hydrated) return null;
 
   const id = `${from}-${to}`;
   const isFavorited = hydrated && favorites.some((f) => f.id === id);
