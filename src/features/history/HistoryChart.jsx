@@ -19,7 +19,6 @@ import { formatDate, formatXAxisDate } from "@/lib/utils";
 function HistoryChart({ series, fromCurrency, toCurrency }) {
   const searchParams = useSearchParams();
   const period = searchParams.get("period") ?? "1M";
-  console.log(series);
 
   const openRate = series[0].rate;
   const lastRate = series[series.length - 1].rate;

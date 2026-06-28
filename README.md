@@ -1,189 +1,436 @@
-# Frontend Mentor - FX Checker
+# Foreign Exchange Currency Converter
 
-![Design preview for the FX Checker coding challenge](./preview.jpg)
+This is my solution to the [Frontend Mentor FX Checker challenge](https://www.frontendmentor.io/challenges/foreign-exchange-currency-converter). I built a responsive foreign exchange dashboard that lets users convert currencies, compare an amount across multiple currencies, inspect rate history, pin favorite currency pairs, and save a local conversion log.
 
-## Welcome! 👋
+I used the [Frankfurter API](https://api.frankfurter.dev/v2) as the exchange-rate data source. In my local environment, the API base URL is stored as `NEXT_PUBLIC_API_URL=https://api.frankfurter.dev/v2`.
 
-This challenge is part of the **Frontend Mentor 30-Day Hackathon**, so for the next 30 days it's free for everyone, including free access to the Figma design file. [Frontend Mentor](https://www.frontendmentor.io) challenges help you improve your coding skills by building realistic projects, and this one makes a great portfolio piece.
+## Table of Contents
 
-**To do this challenge, you need a good understanding of HTML, CSS, and JavaScript, plus some experience working with a REST API.**
+- [Overview](#overview)
+- [Screenshots](#screenshots)
+- [Links](#links)
+- [Features](#features)
+- [Built With](#built-with)
+- [How I Structured the Project](#how-i-structured-the-project)
+- [My Implementation Notes](#my-implementation-notes)
+- [Getting Started](#getting-started)
+- [Available Scripts](#available-scripts)
+- [Environment Variables](#environment-variables)
+- [Accessibility Notes](#accessibility-notes)
+- [What I Learned](#what-i-learned)
+- [Continued Development](#continued-development)
+- [Author](#author)
+
+## Overview
 
-## 🏆 FM30 Hackathon
+The goal of this project was to build a realistic currency conversion app with live data and several connected pieces of UI. I wanted the app to feel more like a small financial dashboard than a single converter form, so I focused on keeping the converter, chart, comparison list, favorites, and logs connected through the same currency state.
 
-For the 30 days of the hackathon, FX Checker is **free+**: the starter code and the Figma design are free for everyone. After the hackathon it becomes a premium challenge.
+My main goals were:
 
-- **Submit your entry** by posting your solution on the Frontend Mentor platform, then sharing your solution-page link in the **#hackathon-submissions** channel on our [Discord community](https://www.frontendmentor.io/community), in the FX Checker thread.
-- **Every entry needs a complete README** (the `README-template.md` in this starter is a good base) to count as a valid submission.
-- **Prizes:** 1st place gets a one-year Pro subscription, 2nd and 3rd each get a one-month Pro subscription.
-- Share your progress as you build with the **#FM30Hackathon** hashtag. We'll be watching and resharing our favorites.
+- Build a responsive dashboard that works well on mobile and desktop.
+- Fetch live exchange-rate data from Frankfurter.
+- Keep the current converter state in the URL.
+- Use persisted client state for favorites and conversion logs.
+- Practice organizing a larger React/Next.js project by feature area.
+- Add useful loading, empty, and error states instead of leaving broken UI.
+- Keep the UI keyboard-friendly and semantically structured where possible.
 
-[Read the full hackathon rules, dates, and judging details here](https://www.frontendmentor.io/articles/fm30-hackathon-currency-converter).
+## Screenshots
+
+### Desktop
+
+![Desktop screenshot of the Foreign Exchange Currency Converter dashboard](./public/desktop-screenshot.png)
+
+### Mobile
+
+![Mobile screenshot of the Foreign Exchange Currency Converter dashboard](./public/mobile-screenshot.png)
+
+## Links
+
+- Solution URL: [Frontend Mentor solution](https://www.frontendmentor.io/solutions/foreign-exchange-currency-converter-I8o0Vj3M0D)
+- Live Site URL: [Vercel deployment](https://repro-foreign-exhange-curency-conve.vercel.app/)
+- Repository: [repro123/foreing-exhange-curency-converter](https://github.com/repro123/foreing-exhange-curency-converter.git)
+
+## Features
+
+### Currency Converter
+
+- I built the main converter around a send amount, send currency, and receive currency.
+- The default conversion state is `USD` to `EUR` with an amount of `1000`.
+- The converted value is calculated from the current exchange rate returned by the API.
+- The amount input updates the URL after a short debounce, which avoids pushing a new route on every keystroke.
+- The active pair can be swapped with the swap button.
+- I added an `Alt+S` keyboard shortcut for swapping currencies.
+- The selected pair can be added to favorites.
+- The current conversion can be saved to the conversion log.
+
+### Currency Picker
+
+- I used a searchable combobox for currency selection.
+- Currencies are split into `Popular` and `Other Currencies`.
+- Each option shows the flag, currency code, and currency name.
+- The picker prevents selecting the same currency as both the send and receive currency.
+- Popular currencies are defined in `src/data/constants.js`.
+
+### Live Market Ticker
+
+- I added a horizontal market ticker above the main dashboard.
+- The ticker uses predefined pairs from `src/data/constants.js`.
+- It compares the current rate with the previous day's rate to show percentage movement.
+- The ticker animation pauses on hover so users can inspect a pair more easily.
+
+The ticker pairs currently include:
+
+- `USD/JPY`
+- `GBP/USD`
+- `USD/CHF`
+- `EUR/GBP`
+- `AUD/USD`
+- `USD/CAD`
+
+### History View
+
+- I built a rate-history panel for the active currency pair.
+- The chart supports `1D`, `1W`, `1M`, `3M`, `1Y`, and `5Y` ranges.
+- Longer ranges use grouped API data:
+  - `1Y` uses weekly grouping.
+  - `5Y` uses monthly grouping.
+- I used Recharts to render the area chart.
+- The chart includes a custom tooltip.
+- The panel displays summary cards for open rate, last rate, change, and percentage change.
+- If no history data is available, the UI shows an empty state instead of a broken chart.
+
+### Compare View
+
+- I added a multi-currency comparison panel.
+- It converts the current send amount into a predefined list of currencies.
+- Each row shows the quote currency, flag, converted amount, and reference rate.
+- Users can pin comparison rows to favorites.
+
+The comparison currencies currently include:
+
+- `EUR`
+- `GBP`
+- `USD`
+- `NGN`
+- `JPY`
+- `CAD`
+- `AUD`
+- `NZD`
+- `CNY`
+- `INR`
+- `AED`
+- `SAR`
+
+### Favorites View
+
+- I used Zustand persistence to save pinned currency pairs in the browser.
+- Favorite pairs are stored under the `favorite-pairs` storage key.
+- Each favorite row shows the live rate and one-day percentage movement.
+- Users can load a favorite pair back into the converter.
+- Users can remove one favorite or clear all favorites.
+- I added an empty state for users who have not pinned any pairs yet.
+
+### Conversion Log
+
+- I used Zustand persistence to save logged conversions in the browser.
+- Conversion logs are stored under the `logged-conversions` storage key.
+- A log entry stores the source currency, target currency, amount, converted amount, id, and date.
+- The app prevents duplicate logs for the same pair and amount combination.
+- Users can delete a single log entry.
+- Users can clear the full log.
+- Users can export their conversion log as a CSV file.
+- The log uses a list layout on smaller screens and a table layout on larger screens.
+
+### Theme Support
+
+- I added theme switching with `next-themes`.
+- The app uses class-based theme switching.
+- Light and dark design tokens are defined in `src/app/globals.css`.
+- The theme selector is displayed in a popover and uses radio controls.
+
+### Loading, Empty, and Error States
+
+- I used Suspense fallbacks around server-rendered data sections.
+- I added skeleton states for dashboard panels and rows.
+- I added empty states for history, comparison, favorites, and logs.
+- I added a custom app error boundary in `src/app/error.js`.
+
+## Built With
+
+- [Next.js](https://nextjs.org/) 16 App Router
+- [React](https://react.dev/) 19
+- [Tailwind CSS](https://tailwindcss.com/) 4
+- [Frankfurter API](https://api.frankfurter.dev/v2) for exchange-rate data
+- [Zustand](https://zustand.docs.pmnd.rs/) for persisted client state
+- [Recharts](https://recharts.org/) for the history chart
+- [next-themes](https://github.com/pacocoursey/next-themes) for theme switching
+- [Base UI](https://base-ui.com/) primitives
+- [shadcn](https://ui.shadcn.com/) and local UI components
+- [Lucide React](https://lucide.dev/) and custom SVG icons
+- Local JetBrains Mono variable font
+- WebP flag assets stored in `public/flags`
+
+## How I Structured the Project
+
+I organized the app by feature instead of putting everything into a few large component files. That made the dashboard easier to reason about as it grew.
+
+```text
+src/
+  app/
+    error.js
+    globals.css
+    layout.js
+    page.js
+  assets/
+    images/
+  components/
+    layout/
+    SVGs/
+    ui/
+  data/
+    constants.js
+  features/
+    check-rates/
+    compare/
+    currencies-number/
+    favorites/
+    history/
+    history-chart-components/
+    logs/
+    scrolling-ticker/
+    tabs/
+    theme/
+  hooks/
+    useCurrencyParams.js
+  lib/
+    compare-rates.js
+    currencies.js
+    exchange-rate.js
+    live-market.js
+    serverApi.js
+    time-series.js
+    utils.js
+  store/
+    useFavoritesStore.js
+    useLogsStore.js
+public/
+  desktop-screenshot.png
+  mobile-screenshot.png
+  flags/
+```
+
+The main idea behind the structure:
+
+- `features/` holds UI and logic for each dashboard feature.
+- `components/ui/` holds reusable low-level UI primitives.
+- `components/layout/` holds shared layout sections.
+- `lib/` holds API and formatting helpers.
+- `store/` holds persisted client state.
+- `data/constants.js` holds fixed lists such as market pairs, popular currencies, comparison currencies, and history periods.
+
+## My Implementation Notes
+
+### URL-Driven State
+
+I used search params for the main dashboard state:
 
-## The challenge
+- `from` controls the send currency.
+- `to` controls the receive currency.
+- `amount` controls the send amount.
+- `period` controls the history chart range.
+- `tab` controls the active dashboard tab.
 
-Your challenge is to build out this FX Checker currency app and get it looking as close to the design as possible.
+This made the app feel more stable on refresh because the main state is not hidden inside component state only. It also makes the current conversion view easier to share.
 
-The app converts between currencies using live exchange rates, with a rate-history chart, a multi-currency comparison, pinned favorite pairs, and a running log of conversions. You can use any tools you like, so if there's something you've been wanting to practice, give it a go.
+### Frankfurter API Data Layer
 
-Your users should be able to:
+All API requests go through `src/lib/serverApi.js`. That helper reads the base URL and provider setting from environment variables, then the feature-specific helpers build on top of it.
 
-### Converter
+The API base URL I used is:
 
-- Enter an amount to send and see it convert in real time as they type
-- Pick the "send" and "receive" currencies from a searchable currency picker
-- See the live exchange rate for the active pair (for example, `1 USD = 0.8530 EUR`)
-- Swap the send and receive currencies with the swap button
-- Favorite the active pair, and log a conversion to their history
+```env
+NEXT_PUBLIC_API_URL=https://api.frankfurter.dev/v2
+```
 
-### Currency picker
+The project also reads:
 
-- Search the full list of available currencies by code or name
-- See currencies grouped into "Popular" and "Other currencies", each row showing the flag, code, and name
-- See a check against the currency that's currently selected
+```env
+NEXT_PUBLIC_API_PROVIDER=ALL
+```
 
-### Live markets ticker
+When `NEXT_PUBLIC_API_PROVIDER` is set to `ALL`, the helper does not append a provider filter. If a different provider value is used, the helper appends it as a `providers` query parameter.
 
-- See a ticker of currency pairs, each with its current rate and 24-hour change (up or down)
+The main data helpers are:
 
-### Rate history
+- `getCurrencies()` for the currency list.
+- `getSingleCurrency()` for one currency's metadata.
+- `getExchangeRate()` for the converter pair.
+- `getLiveMarketRates()` for the ticker and favorites.
+- `getCompareRates()` for the comparison panel.
+- `getTimeSeries()` for historical chart data.
 
-- View a line and area chart of the active pair's rate over time
-- Switch the chart range between 1D, 1W, 1M, 3M, 1Y, and 5Y
-- See the open, last, absolute change, and percentage change for the selected range
+### Caching and Revalidation
 
-### Compare
+I used Next.js `fetch` revalidation options in the API helpers:
 
-- See their send amount converted into a range of other currencies at once, each with its reference rate
-- Pin or unpin any comparison row to their favorites
+- Currency metadata revalidates every 24 hours.
+- Market data, comparison data, and time-series data revalidate hourly.
+- Single exchange-rate lookups use a shorter revalidation time.
 
-### Favorites
+This keeps the UI reasonably fresh without treating every request the same way.
 
-- See their pinned pairs, each with its live rate and 24-hour change
-- Load a pinned pair back into the converter by selecting its row
-- Unpin a pair they no longer want to track
+### Persisted Client State
 
-### Conversion log
+I used Zustand's `persist` middleware for browser-only state:
 
-- See a log of conversions they've made, each showing the relative time, the pair, and the send and receive amounts
-- Clear the whole log
-- Delete an individual entry
+- Favorites persist under `favorite-pairs`.
+- Logs persist under `logged-conversions`.
 
-### UI & accessibility
+Both stores include a hydration flag. This helps avoid rendering persisted counts before the browser has loaded the saved state.
 
-- View the optimal layout for the interface depending on their device's screen size
-- See hover and focus states for all interactive elements on the page
-- Navigate the entire app using only their keyboard
+### Responsive Navigation
 
-### Data
+For the dashboard panels, I used:
 
-There's no data file for this challenge. The exchange rates come from a live API, and the user's own data (favorites and conversion log) is saved in the browser.
+- Tabs on medium and larger screens.
+- A select control on smaller screens.
 
-We recommend the [Frankfurter API](https://frankfurter.dev/) for the rates. It's free, needs no API key, has no rate limits, is CORS-enabled, and is backed by the European Central Bank. A few endpoints cover everything in the design:
+This kept the mobile layout cleaner while still giving desktop users quick access to each panel.
 
-- `GET /v2/currencies` to populate the currency picker
-- `GET /v2/latest?base=USD` for the converter, ticker, and comparison rates
-- `GET /v2/latest?base=USD&symbols=EUR` for a lighter single-pair lookup
-- `GET /v2/{start}..{end}?base=USD&symbols=EUR` for the rate-history time series
+### Styling Approach
 
-You're free to use a different exchange-rate API if you prefer. Just note that the history chart needs time-series data, so check your chosen API supports it.
+I used Tailwind CSS with custom properties defined in `src/app/globals.css`. The stylesheet includes:
 
-### Saving favorites and the conversion log
+- Light theme tokens.
+- Dark theme tokens.
+- Typography utility presets.
+- Tailwind theme mappings.
+- Ticker animation.
+- Number input normalization.
 
-A user's pinned pairs and their conversion log should persist across browser sessions. When they pin a pair or log a conversion, that change should still be there when they close and reopen the app. `localStorage` is a natural fit, since this app doesn't need user accounts. It's also a nice touch to remember the last tab they had open.
+Using tokens made theme switching easier because most components can depend on semantic values like `background`, `foreground`, `card`, `primary`, and `nav`.
 
-### States to handle
+## Getting Started
 
-- **Empty favorites:** when nothing is pinned yet, show the prompt to pin a pair rather than an empty list
-- **Empty log:** when no conversions have been logged, show the prompt explaining that conversions are recorded automatically
-- **Empty comparison:** when the send amount is empty, prompt the user to enter an amount
-- **Chart error:** if the rate history can't load, show a friendly message rather than a broken chart
+### Prerequisites
 
-### Accessibility
+You will need:
 
-- Make sure keyboard navigation works for all interactive elements, including the currency pickers, the swap button, the tabs, the chart range controls, and the favorite and pin toggles
-- Provide visible focus styles. Dark interfaces hide weak focus rings, so these matter more than usual here
-- Use appropriate semantic HTML for the tabs, the lists of currencies and conversions, and the currency picker popover
-- Announce dynamic changes to screen readers, such as the converted amount updating, a pair being pinned, or a conversion being logged
+- Node.js installed locally
+- pnpm installed locally
+- A `.env.local` file with the required API variables
 
-### Ideas to test yourself
+This project uses `pnpm`, based on the included `pnpm-lock.yaml` and `pnpm-workspace.yaml`.
 
-- Add a light theme so users can switch between the dark-first design and a light alternative
-- Persist the active currency pair in the URL so a conversion can be bookmarked or shared
-- Add keyboard shortcuts so power users can focus the search, swap currencies, and switch the chart range without the mouse
-- Export the conversion log as a CSV file
-- Add a hover crosshair to the rate chart that shows the exact date and rate under the cursor
-- Cache the last successful rates and fall back to them with an out-of-date banner when the API is unreachable
-- Build as a full-stack app with accounts so a user's favorites and conversion log sync across devices
+### Installation
 
-### Want some support on the challenge?
+Install dependencies:
 
-[Join our community](https://www.frontendmentor.io/community) and ask questions in the **#help** channel.
+```bash
+pnpm install
+```
 
-## Where to find everything
+Create `.env.local` in the project root and add:
 
-Your task is to build out the project to the Figma design file provided. During the hackathon, you can download the design for free on the platform. The design download comes with a `README.md` file to help you get set up. There are a couple of `.gitignore` files in this starter to keep the design files out of your repo, so please leave them in place.
+```env
+NEXT_PUBLIC_API_URL=https://api.frankfurter.dev/v2
+NEXT_PUBLIC_API_PROVIDER=ALL
+```
 
-All the required assets for this project are in the `/assets` folder. The icons and flags are already exported and optimized, and the logo is provided as an SVG. We also include the variable font file for JetBrains Mono. You can either link to Google Fonts or use the local font file to host the font yourself.
+Run the development server:
 
-The design system in the design file has all the details on the colors, fonts, spacing, and styles used in this project. Our fonts always come from [Google Fonts](https://fonts.google.com/).
+```bash
+pnpm dev
+```
 
-The starter `index.html` already contains the static written content from the design, with comments marking where the dynamic, data-driven content goes. Building the HTML structure around it is part of the challenge.
+Then open:
 
-## Using AI coding assistants
+```text
+http://localhost:3000
+```
 
-We've included two files to help you if you're using AI coding assistants (like Claude, GitHub Copilot, Cursor, etc.) while working on this challenge:
+## Available Scripts
 
-- `AGENTS.md` - Contains detailed instructions for AI assistants on how to help you with this challenge. It's tailored to this challenge's difficulty level, so the AI will provide guidance appropriate to your learning stage—offering more support for beginner challenges and encouraging more independence on advanced ones.
-- `CLAUDE.md` - A pointer file that directs Claude-based tools to the AGENTS.md instructions.
+```bash
+pnpm dev
+```
 
-**How to use them:** You don't need to do anything! These files are automatically detected by most AI coding tools. The AI will read them and adjust its behavior to be a better learning partner—guiding you toward solutions rather than just giving you the answers.
+Runs the local Next.js development server.
 
-**Note:** These files are designed to help you *learn*, not to do the work for you. The AI is instructed to ask questions, give hints, and explain concepts rather than writing complete solutions.
+```bash
+pnpm build
+```
 
-## Building your project
+Creates a production build.
 
-Feel free to use any workflow that you feel comfortable with. Below is a suggested process, but do not feel like you need to follow these steps:
+```bash
+pnpm start
+```
 
-1. Separate the `starter-code` from the rest of this project and rename it to something meaningful for you. Initialize the codebase as a public repository on [GitHub](https://github.com/). Creating a repo will make it easier to share your code with the community if you need help. If you're not sure how to do this, [have a read-through of this Try Git resource](https://try.github.io/). **⚠️ IMPORTANT ⚠️: There are already a couple of `.gitignore` files in this project. Please do not remove them or change the content of the files. If you create a brand new project, please use the `.gitignore` files provided in your new codebase. This is to avoid the accidental upload of the design files to GitHub.**
-2. Configure your repository to publish your code to a web address. This will also be useful if you need some help during a challenge as you can share the URL for your project with your repo URL. There are a number of ways to do this, and we provide some recommendations below.
-3. Look through the designs to start planning out how you'll tackle the project. This step is crucial to help you think ahead for CSS classes to create reusable styles.
-4. Before adding any styles, structure your content with HTML. Writing your HTML first can help focus your attention on creating well-structured content.
-5. Write out the base styles for your project, including general content styles, such as `font-family` and `font-size`.
-6. Start adding styles to the top of the page and work down. Only move on to the next section once you're happy you've completed the area you're working on.
+Starts the production server after a successful build.
 
-## Deploying your project
+```bash
+pnpm lint
+```
 
-As mentioned above, there are many ways to host your project for free. Our recommended hosts are:
+Runs ESLint for the project.
 
-- [GitHub Pages](https://pages.github.com/)
-- [Vercel](https://vercel.com/)
-- [Netlify](https://www.netlify.com/)
+## Environment Variables
 
-You can host your site using one of these solutions or any of our other trusted providers. [Read more about our recommended and trusted hosts](https://www.frontendmentor.io/guides/hosting-your-solution).
+The app expects these public environment variables:
 
-## Submitting your hackathon entry
+```env
+NEXT_PUBLIC_API_URL=https://api.frankfurter.dev/v2
+NEXT_PUBLIC_API_PROVIDER=ALL
+```
 
-To enter, there are two steps:
+`NEXT_PUBLIC_API_URL` is the Frankfurter API base URL.
 
-1. **Submit your solution on the Frontend Mentor platform.** This is required. It creates your solution page, with your live site and a link to your GitHub repo. Follow our ["Complete guide to submitting solutions"](https://www.frontendmentor.io/guides/how-to-submit-solutions) if you need a hand.
-2. **Share your solution-page URL** in the **#hackathon-submissions** channel on our [Discord community](https://www.frontendmentor.io/community), in the FX Checker thread. That link is your entry, since it points to both your live demo and your repo.
+`NEXT_PUBLIC_API_PROVIDER` controls whether a provider filter is added to API requests. In this project I use `ALL`, so the request helper does not append a provider filter.
 
-Make sure your repo includes a complete README so the team and the community can understand what you built.
+## Accessibility Notes
 
-If you're looking for feedback on your solution, be sure to ask questions when submitting it. The more specific and detailed you are with your questions, the higher the chance you'll get valuable feedback from the community.
+I tried to make the interface usable beyond pointer-only interaction:
 
-## Sharing your solution
+- The amount input has a screen-reader-only label.
+- The swap button has an accessible label and title.
+- The swap button supports the `Alt+S` shortcut.
+- The currency picker uses a combobox pattern.
+- Duplicate currency choices are disabled with explanatory labels.
+- History period buttons have descriptive `aria-label` values.
+- The Recharts chart uses `accessibilityLayer`.
+- Favorite rows have descriptive link and remove-button labels.
+- Empty states communicate what is happening when a panel has no data.
 
-There are multiple places you can share your solution:
+A full manual accessibility audit would still be a useful next step, especially with keyboard-only navigation and screen reader testing.
 
-1. Share your progress and your finished project with the **#FM30Hackathon** hashtag so we can find it and reshare our favorites.
-2. Share your solution page in the **#finished-projects** channel of our [community](https://www.frontendmentor.io/community).
-3. Share on [X (formerly Twitter)](https://x.com/frontendmentor) and mention **@frontendmentor**, including the repo and live URLs in your post. We'd love to take a look at what you've built and help share it around.
-4. Share your solution on [LinkedIn](https://www.linkedin.com/company/frontend-mentor/).
-5. Blog about your experience building your project. Writing about your workflow, technical choices, and talking through your code is a brilliant way to reinforce what you've learned. Great platforms to write on are [dev.to](https://dev.to/), [Hashnode](https://hashnode.com/), and [CodeNewbie](https://community.codenewbie.org/).
+## What I Learned
 
-## Got feedback for us?
+This project pushed me to think more carefully about state boundaries. Some state belongs in the URL, some belongs on the server, and some belongs only in the browser. Keeping those responsibilities separate made the app easier to extend.
 
-We love receiving feedback! We're always looking to improve our challenges and our platform. So if you have anything you'd like to mention, please email hi[at]frontendmentor[dot]io.
+The biggest lessons for me were:
 
-**Have fun building, and good luck in the hackathon!** 🚀
+- URL search params are useful for dashboard state that should survive refreshes.
+- Persisted Zustand stores are a good fit for local-only user data like favorites and logs.
+- Server-side helpers keep API logic out of UI components.
+- Loading, empty, and error states need to be planned as part of the feature, not added at the very end.
+- A feature-based folder structure helps keep a growing React app more maintainable.
+
+## Continued Development
+
+Things I would like to improve or explore next:
+
+- Add automated tests for stores, URL parameter updates, and formatting helpers.
+- Add integration tests for the main converter flow.
+- Improve fallback behavior when the Frankfurter API is unavailable.
+- Add a cached last-known-good rate state for failed network requests.
+- Improve CSV export escaping if log values ever become more complex.
+- Add a formal `.env.example` file for easier setup.
+- Run a full accessibility audit with keyboard navigation and screen reader testing.
+
+## Author
+
+- Frontend Mentor: [@repro123](https://www.frontendmentor.io/profile/repro123)
+- GitHub: [@repro123](https://github.com/repro123)
+
