@@ -20,7 +20,7 @@ export default function HistoryPeriodButtons() {
     } else {
       params.set("period", value);
     }
-    router.push(`?${params.toString()}`);
+    router.push(`?${params.toString()}`, { scroll: false });
   };
 
   return (

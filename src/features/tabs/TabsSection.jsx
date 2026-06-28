@@ -51,7 +51,7 @@ function TabsSection({ comparePanel, historyPanel }) {
     } else {
       params.set("tab", value);
     }
-    router.push(`?${params.toString()}`);
+    router.push(`?${params.toString()}`, { scroll: false });
   };
 
   const selectedItem = items.find((item) => item.value === activeTab);

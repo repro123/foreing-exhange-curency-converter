@@ -26,7 +26,7 @@ export function useCurrencyParams() {
 
     if (nextUrl === currentUrl) return;
 
-    router.push(nextUrl);
+    router.push(nextUrl, { scroll: false });
   }
 
   return {
