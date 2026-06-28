@@ -13,16 +13,17 @@ import {
 } from "@/components/ui/card";
 import { ChartContainer, ChartTooltip } from "@/components/ui/chart";
 
-import CurrentDateTime from "@/features/history-chart-components/CurrentDateTime";
 import HistoryTooltip from "@/features/history-chart-components/HistoryTooltip";
-import { formatXAxisDate } from "@/lib/utils";
+import { formatDate, formatXAxisDate } from "@/lib/utils";
 
 function HistoryChart({ series, fromCurrency, toCurrency }) {
   const searchParams = useSearchParams();
   const period = searchParams.get("period") ?? "1M";
+  console.log(series);
 
   const openRate = series[0].rate;
   const lastRate = series[series.length - 1].rate;
+  const lastDate = series[series.length - 1].date;
   const percentChange = ((lastRate - openRate) / openRate) * 100;
 
   const chartConfig = {
@@ -36,8 +37,9 @@ function HistoryChart({ series, fromCurrency, toCurrency }) {
     <Card>
       <CardHeader className="flex items-center justify-between">
         <CardTitle className="preset-3-medium">{`${fromCurrency}/${toCurrency}`}</CardTitle>
-        <CardDescription className="text-nav preset-5">
-          {lastRate} · <CurrentDateTime />
+        <CardDescription className="text-nav preset-5 flex items-center gap-2">
+          <span>{lastRate.toFixed(4)}</span>·
+          <span>Last updated: {formatDate(lastDate)}</span>
         </CardDescription>
       </CardHeader>
       <CardContent className="pt-4">

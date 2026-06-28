@@ -200,24 +200,12 @@ export function formatXAxisDate(date, period) {
   }
 }
 
-export function formatDateTime() {
-  const now = new Date();
-  const timeZoneAbbr = now
-    .toLocaleTimeString("en-US", { timeZoneName: "short" })
-    .split(" ")
-    .pop();
+export function formatDate(date) {
+  const dateObj = new Date(date.replace(/-/g, "\/"));
 
-  return (
-    now
-      .toLocaleDateString("en-US", { month: "short", day: "numeric" })
-      .toUpperCase() +
-    " · " +
-    now.toLocaleTimeString("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false,
-    }) +
-    " " +
-    timeZoneAbbr
-  );
+  return dateObj.toLocaleDateString("en-US", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
 }
