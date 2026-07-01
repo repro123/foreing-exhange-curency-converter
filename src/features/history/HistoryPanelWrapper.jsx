@@ -1,6 +1,7 @@
+import CacheWriter from "@/features/cache/CacheWriter";
 import CachedHistoryPanel from "@/features/history/CachedHistoryPanel";
-import HistoryCacheWriter from "@/features/history/HistoryCacheWriter";
 import HistoryPanel from "@/features/history/HistoryPanel";
+import { cacheKeys } from "@/lib/dataCache";
 import { getTimeSeries } from "@/lib/time-series";
 import { getDateRange } from "@/lib/utils";
 
@@ -29,11 +30,9 @@ async function HistoryPanelWrapper({ fromCurrency, toCurrency, period }) {
 
   return (
     <>
-      <HistoryCacheWriter
-        series={series}
-        period={period}
-        fromCurrency={fromCurrency}
-        toCurrency={toCurrency}
+      <CacheWriter
+        cacheKey={cacheKeys.history(fromCurrency, toCurrency, period)}
+        payload={{ series }}
       />
       <HistoryPanel
         series={series}

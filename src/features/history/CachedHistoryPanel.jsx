@@ -1,33 +1,17 @@
 "use client";
 
-import { useCallback, useSyncExternalStore } from "react";
-
+import CachedDataNotice from "@/features/cache/CachedDataNotice";
 import HistoryPanel from "@/features/history/HistoryPanel";
 import HistoryPanelSkeleton from "@/features/history/HistoryPanelSkeleton";
-import { readHistoryCache } from "@/features/history/historyCache";
 import EmptyPanelState from "@/features/tabs/EmptyPanelState";
-
-function formatSavedAt(savedAt) {
-  return new Intl.DateTimeFormat("en-US", {
-    dateStyle: "medium",
-    timeStyle: "short",
-  }).format(new Date(savedAt));
-}
+import { useClientCache } from "@/hooks/useClientCache";
+import { cacheKeys, isValidHistoryCache } from "@/lib/dataCache";
+import { formatCacheDate } from "@/lib/utils";
 
 function CachedHistoryPanel({ fromCurrency, toCurrency, period }) {
-  const getSnapshot = useCallback(
-    () => readHistoryCache(fromCurrency, toCurrency, period),
-    [fromCurrency, period, toCurrency],
-  );
-
-  const cacheEntry = useSyncExternalStore(
-    (onStoreChange) => {
-      window.addEventListener("storage", onStoreChange);
-
-      return () => window.removeEventListener("storage", onStoreChange);
-    },
-    getSnapshot,
-    () => undefined,
+  const cacheEntry = useClientCache(
+    cacheKeys.history(fromCurrency, toCurrency, period),
+    isValidHistoryCache,
   );
 
   if (cacheEntry === undefined) {
@@ -45,16 +29,11 @@ function CachedHistoryPanel({ fromCurrency, toCurrency, period }) {
 
   return (
     <div>
-      <div
-        role="status"
-        className="mb-4 rounded-xl border border-primary/30 bg-primary/10 px-4 py-3 text-primary"
-      >
-        <p className="preset-5-medium uppercase">Saved history data</p>
-        <p className="preset-5 mt-1 text-foreground">
-          Live rates are temporarily unavailable. Showing {fromCurrency}/
-          {toCurrency} {period} history saved {formatSavedAt(cacheEntry.savedAt)}.
-        </p>
-      </div>
+      <CachedDataNotice title="Saved history data">
+        Live rates are temporarily unavailable. Showing {fromCurrency}/
+        {toCurrency} {period} history saved{" "}
+        {formatCacheDate(cacheEntry.savedAt)}.
+      </CachedDataNotice>
 
       <HistoryPanel
         series={cacheEntry.series}
