@@ -4,12 +4,14 @@ import Image from "next/image";
 import CompareToggleFavoriteBtn from "@/features/compare/CompareToggleFavoriteBtn";
 
 function CompareRow({ rateItem }) {
+  const currencyName = rateItem.quoteDetails?.name ?? rateItem.quote;
+
   return (
     <li className="bg-card border rounded-xl flex items-center gap-4 justify-between p-4">
       <div className="flex items-center gap-2">
         <Image
           src={`/flags/${getCurrencyFlag(rateItem.quote)}.webp`}
-          alt={`${rateItem.quoteDetails.name} flag`}
+          alt={`${currencyName} flag`}
           width={20}
           height={20}
         />
@@ -18,7 +20,7 @@ function CompareRow({ rateItem }) {
           <span aria-hidden="true" className="preset-4">
             {rateItem.quote}
           </span>
-          <p className="text-nav preset-5">{rateItem.quoteDetails.name}</p>
+          <p className="text-nav preset-5">{currencyName}</p>
         </div>
       </div>
 
