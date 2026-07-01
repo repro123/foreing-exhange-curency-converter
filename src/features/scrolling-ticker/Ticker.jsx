@@ -6,9 +6,11 @@ function Ticker({ item }) {
       <span className="md:preset-5-medium">{item.rate}</span>
 
       <span
-        className={`${item.change >= 0 ? "text-success" : "text-destructive"} flex gap-2 items-center`}
+        className={`${item.change > 0 ? "text-success" : item.change < 0 ? "text-destructive" : "text-nav"} flex gap-2 items-center`}
       >
-        <span aria-hidden="true">{item.change >= 0 ? "▲" : "▼"}</span>
+        <span aria-hidden="true">
+          {item.change > 0 ? "▲" : item.change < 0 ? "▼" : "="}
+        </span>
         <span>
           {item.change > 0 && "+"}
           {item.change < 0 && "-"}

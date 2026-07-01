@@ -1,21 +1,31 @@
+import CacheWriter from "@/features/cache/CacheWriter";
+import CachedTickerWrapper from "@/features/scrolling-ticker/CachedTickerWrapper";
 import Ticker from "@/features/scrolling-ticker/Ticker";
 import { today, yesterday } from "@/lib/utils";
 import { MARKET_PAIRS } from "@/data/constants";
+import { cacheKeys } from "@/lib/dataCache";
 import { getLiveMarketRates } from "@/lib/live-market";
 
 async function TickerWrapper() {
-  const [todayRates, yesterdayRates] = await Promise.all([
-    Promise.all(
-      MARKET_PAIRS.map((pair) =>
-        getLiveMarketRates(pair.base, pair.quote, today),
+  let todayRates;
+  let yesterdayRates;
+
+  try {
+    [todayRates, yesterdayRates] = await Promise.all([
+      Promise.all(
+        MARKET_PAIRS.map((pair) =>
+          getLiveMarketRates(pair.base, pair.quote, today),
+        ),
       ),
-    ),
-    Promise.all(
-      MARKET_PAIRS.map((pair) =>
-        getLiveMarketRates(pair.base, pair.quote, yesterday),
+      Promise.all(
+        MARKET_PAIRS.map((pair) =>
+          getLiveMarketRates(pair.base, pair.quote, yesterday),
+        ),
       ),
-    ),
-  ]);
+    ]);
+  } catch {
+    return <CachedTickerWrapper />;
+  }
 
   const items = todayRates.map((today) => {
     const yesterday = yesterdayRates.find(
@@ -36,13 +46,16 @@ async function TickerWrapper() {
   const tickerItems = [...items, ...items];
 
   return (
-    <div className="overflow-hidden w-full h-full grid place-items-center ticker-wrapper">
-      <div className="ticker-track flex items-stretch h-full w-max gap-4  preset-6 md:preset-5">
-        {tickerItems.map((item, index) => (
-          <Ticker key={`${item.pair}-${index}`} item={item} />
-        ))}
+    <>
+      <CacheWriter cacheKey={cacheKeys.ticker} payload={{ items }} />
+      <div className="ticker-wrapper grid h-full w-full place-items-center overflow-hidden">
+        <div className="ticker-track preset-6 flex h-full w-max items-stretch gap-4 md:preset-5">
+          {tickerItems.map((item, index) => (
+            <Ticker key={`${item.pair}-${index}`} item={item} />
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

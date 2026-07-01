@@ -209,3 +209,10 @@ export function formatDate(date) {
     year: "numeric",
   });
 }
+
+export function formatCacheDate(savedAt) {
+  return new Intl.DateTimeFormat("en-US", {
+    dateStyle: "medium",
+    timeStyle: "short",
+  }).format(new Date(savedAt));
+}
