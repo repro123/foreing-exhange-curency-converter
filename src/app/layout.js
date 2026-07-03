@@ -2,7 +2,6 @@ import localFont from "next/font/local";
 import "./globals.css";
 import ThemeProviders from "@/features/theme/ThemeProviders";
 import NetworkStatusBanner from "@/features/cache/NetworkStatusBanner";
-import ServiceWorkerRegistration from "@/features/pwa/ServiceWorkerRegistration";
 
 const myFont = localFont({
   src: "./fonts/jetbrains-mono-variable.ttf",
@@ -24,7 +23,6 @@ export default function RootLayout({ children }) {
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <ThemeProviders>
-          <ServiceWorkerRegistration />
           <NetworkStatusBanner />
           {children}
         </ThemeProviders>
