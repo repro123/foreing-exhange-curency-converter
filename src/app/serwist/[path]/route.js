@@ -14,6 +14,6 @@ export const { dynamic, dynamicParams, revalidate, generateStaticParams, GET } =
         revision,
       },
     ],
-    swSrc: "app/sw.js",
+    swSrc: "src/app/sw.js",
     useNativeEsbuild: true,
   });
