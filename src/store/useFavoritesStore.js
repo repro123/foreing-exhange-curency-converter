@@ -1,6 +1,14 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+const sortFavoritesByDate = (favorites = []) =>
+  [...favorites].sort((a, b) => {
+    const dateA = a?.date ? new Date(a.date).getTime() : 0;
+    const dateB = b?.date ? new Date(b.date).getTime() : 0;
+
+    return dateB - dateA;
+  });
+
 export const useFavoritesStore = create(
   persist(
     (set, get) => ({
@@ -15,7 +23,9 @@ export const useFavoritesStore = create(
 
           if (exists) return state;
 
-          return { favorites: [...state.favorites, favorite] };
+          return {
+            favorites: sortFavoritesByDate([...state.favorites, favorite]),
+          };
         }),
 
       removeFavorite: (id) =>
@@ -29,7 +39,10 @@ export const useFavoritesStore = create(
       name: "favorite-pairs",
       partialize: (state) => ({ favorites: state.favorites }),
       onRehydrateStorage: () => (state) => {
-        state?.setHydrated(); // calls set() internally, triggers re-render
+        if (state) {
+          state.favorites = sortFavoritesByDate(state.favorites);
+          state.setHydrated();
+        }
       },
     },
   ),
