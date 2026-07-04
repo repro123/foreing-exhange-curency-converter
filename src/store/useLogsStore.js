@@ -1,6 +1,14 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+const sortLogsByDate = (logs = []) =>
+  [...logs].sort((a, b) => {
+    const dateA = a?.date ? new Date(a.date).getTime() : 0;
+    const dateB = b?.date ? new Date(b.date).getTime() : 0;
+
+    return dateB - dateA;
+  });
+
 export const useLogsStore = create(
   persist(
     (set, get) => ({
@@ -15,7 +23,7 @@ export const useLogsStore = create(
 
           if (exists) return state;
 
-          return { logs: [...state.logs, log] };
+          return { logs: sortLogsByDate([...state.logs, log]) };
         }),
 
       removeLog: (id) =>
@@ -53,7 +61,10 @@ export const useLogsStore = create(
       name: "logged-conversions",
       partialize: (state) => ({ logs: state.logs }),
       onRehydrateStorage: () => (state) => {
-        state?.setHydrated(); // calls set() internally, triggers re-render
+        if (state) {
+          state.logs = sortLogsByDate(state.logs);
+          state.setHydrated();
+        }
       },
     },
   ),
