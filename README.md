@@ -442,10 +442,7 @@ Things I would like to improve or explore next:
 - Add automated tests for stores, URL parameter updates, and formatting helpers.
 - Add integration tests for the main converter flow.
 - Improve fallback behavior when the Frankfurter API is unavailable.
-- Add a cached last-known-good rate state for failed network requests.
 - Improve CSV export escaping if log values ever become more complex.
-- Add a formal `.env.example` file for easier setup.
-- Run a full accessibility audit with keyboard navigation and screen reader testing.
 
 ## Author
 
