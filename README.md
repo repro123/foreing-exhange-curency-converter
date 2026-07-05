@@ -1,6 +1,6 @@
 # Foreign Exchange Currency Converter
 
-This is my solution to the [Frontend Mentor FX Checker challenge](https://www.frontendmentor.io/challenges/foreign-exchange-currency-converter). I built a responsive foreign exchange dashboard that lets users convert currencies, compare an amount across multiple currencies, inspect rate history, pin favorite currency pairs, and save a local conversion log.
+This is my solution to the [Frontend Mentor FX Checker challenge](https://www.frontendmentor.io/challenges/foreign-exchange-currency-converter). I built a responsive foreign exchange dashboard that lets users convert currencies, compare an amount across multiple currencies, inspect rate history, pin favorite currency pairs, save a local conversion log, and keep using the app with cached data when the connection drops.
 
 I used the [Frankfurter API](https://api.frankfurter.dev/v2) as the exchange-rate data source. In my local environment, the API base URL is stored as `NEXT_PUBLIC_API_URL=https://api.frankfurter.dev/v2`.
 
@@ -10,6 +10,7 @@ I used the [Frankfurter API](https://api.frankfurter.dev/v2) as the exchange-rat
 - [Screenshots](#screenshots)
 - [Links](#links)
 - [Features](#features)
+- [Offline and PWA Support](#offline-and-pwa-support)
 - [Built With](#built-with)
 - [How I Structured the Project](#how-i-structured-the-project)
 - [My Implementation Notes](#my-implementation-notes)
@@ -156,6 +157,14 @@ The comparison currencies currently include:
 - I added empty states for history, comparison, favorites, and logs.
 - I added a custom app error boundary in `src/app/error.js`.
 
+## Offline and PWA Support
+
+- The app uses Serwist to register a service worker and provide offline support.
+- A dedicated offline fallback page is shown when the app is opened without a connection.
+- Cached conversion, comparison, history, ticker, and currency data can be shown when fresh network data is unavailable.
+- A small network status banner informs the user when the app is running from saved data.
+- The offline experience keeps the main dashboard usable instead of failing completely when the network drops.
+
 ## Built With
 
 - [Next.js](https://nextjs.org/) 16 App Router
@@ -165,6 +174,7 @@ The comparison currencies currently include:
 - [Zustand](https://zustand.docs.pmnd.rs/) for persisted client state
 - [Recharts](https://recharts.org/) for the history chart
 - [next-themes](https://github.com/pacocoursey/next-themes) for theme switching
+- [Serwist](https://serwist.pages.dev/) for PWA and offline support
 - [Base UI](https://base-ui.com/) primitives
 - [shadcn](https://ui.shadcn.com/) and local UI components
 - [Lucide React](https://lucide.dev/) and custom SVG icons
@@ -288,6 +298,14 @@ I used Zustand's `persist` middleware for browser-only state:
 - Logs persist under `logged-conversions`.
 
 Both stores include a hydration flag. This helps avoid rendering persisted counts before the browser has loaded the saved state.
+
+### Offline and Cached Data Strategy
+
+The app also uses client-side caching and a service worker so it can remain useful when connectivity drops:
+
+- Recent exchange-rate, comparison, history, ticker, and currency data are cached in the browser.
+- Offline requests fall back to the last known saved data instead of showing a blank screen.
+- The app surfaces a banner and cached-data notice so users understand when they are viewing stored information.
 
 ### Responsive Navigation
 

@@ -2,6 +2,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import ThemeProviders from "@/features/theme/ThemeProviders";
 import NetworkStatusBanner from "@/features/cache/NetworkStatusBanner";
+import { SerwistProvider } from "@serwist/turbopack/react";
 
 const myFont = localFont({
   src: "./fonts/jetbrains-mono-variable.ttf",
@@ -22,10 +23,12 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
-        <ThemeProviders>
-          <NetworkStatusBanner />
-          {children}
-        </ThemeProviders>
+        <SerwistProvider swUrl="/serwist/sw.js">
+          <ThemeProviders>
+            <NetworkStatusBanner />
+            {children}
+          </ThemeProviders>
+        </SerwistProvider>
       </body>
     </html>
   );
