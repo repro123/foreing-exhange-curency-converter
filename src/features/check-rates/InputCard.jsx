@@ -2,7 +2,7 @@
 
 import CurrencySelect from "@/features/check-rates/CurrencySelect";
 import { useCurrencyParams } from "@/hooks/useCurrencyParams";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function InputCard({
   type,
@@ -13,11 +13,17 @@ function InputCard({
 }) {
   const { amount, updateParams } = useCurrencyParams();
   const [inputVal, setInputVal] = useState(amount);
+  const hasInteractedRef = useRef(false);
 
   const isSend = type === "send";
 
   useEffect(() => {
     if (!isSend) return;
+
+    if (!hasInteractedRef.current) {
+      hasInteractedRef.current = true;
+      return;
+    }
 
     const timeout = setTimeout(() => {
       updateParams({
