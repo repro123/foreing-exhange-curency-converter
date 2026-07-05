@@ -10,6 +10,10 @@ export const { dynamic, dynamicParams, revalidate, generateStaticParams, GET } =
   createSerwistRoute({
     additionalPrecacheEntries: [
       {
+        url: "/",
+        revision,
+      },
+      {
         url: "/~offline",
         revision,
       },

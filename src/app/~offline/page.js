@@ -1,3 +1,5 @@
+import TryAgainButton from "@/app/~offline/TryAgainButton";
+
 export const metadata = {
   title: "Offline | FXConvert",
 };
@@ -19,12 +21,7 @@ export default function OfflinePage() {
           Once you&apos;re back online, refresh the page to continue.
         </p>
 
-        <button
-          onClick={() => window.location.reload()}
-          className="mt-8 rounded-lg bg-primary px-4 py-2 text-primary-foreground"
-        >
-          Try Again
-        </button>
+        <TryAgainButton />
       </div>
     </main>
   );

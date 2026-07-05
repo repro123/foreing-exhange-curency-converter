@@ -1,8 +1,6 @@
-import CacheWriter from "@/features/cache/CacheWriter";
 import CachedCheckRateSection from "@/features/check-rates/CachedCheckRateSection";
-import CheckRatePanel from "@/features/check-rates/CheckRatePanel";
+import CheckRatePanelWithCache from "@/features/check-rates/CheckRatePanelWithCache";
 import { getCurrencies } from "@/lib/currencies";
-import { cacheKeys } from "@/lib/dataCache";
 import { getExchangeRate } from "@/lib/exchange-rate";
 
 async function CheckRateSection({ searchParams }) {
@@ -20,23 +18,13 @@ async function CheckRateSection({ searchParams }) {
   }
 
   return (
-    <>
-      <CacheWriter
-        cacheKey={cacheKeys.currencies}
-        payload={{ currencies }}
-      />
-      <CacheWriter
-        cacheKey={cacheKeys.exchangeRate(from, to)}
-        payload={{ rateData }}
-      />
-      <CheckRatePanel
-        currencies={currencies}
-        from={from}
-        to={to}
-        amount={amount}
-        rate={rateData.rate}
-      />
-    </>
+    <CheckRatePanelWithCache
+      currencies={currencies}
+      rateData={rateData}
+      from={from}
+      to={to}
+      amount={amount}
+    />
   );
 }
 
