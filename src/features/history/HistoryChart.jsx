@@ -1,7 +1,5 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
-
 import { AreaChart, Area, CartesianGrid, XAxis, YAxis } from "recharts";
 
 import {
@@ -16,10 +14,7 @@ import { ChartContainer, ChartTooltip } from "@/components/ui/chart";
 import HistoryTooltip from "@/features/history-chart-components/HistoryTooltip";
 import { formatDate, formatXAxisDate } from "@/lib/utils";
 
-function HistoryChart({ series, fromCurrency, toCurrency }) {
-  const searchParams = useSearchParams();
-  const period = searchParams.get("period") ?? "1M";
-
+function HistoryChart({ series, fromCurrency, toCurrency, period }) {
   const openRate = series[0].rate;
   const lastRate = series[series.length - 1].rate;
   const lastDate = series[series.length - 1].date;

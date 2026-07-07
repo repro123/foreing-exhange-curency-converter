@@ -1,5 +1,6 @@
 import CacheWriter from "@/features/cache/CacheWriter";
 import CachedHistoryPanel from "@/features/history/CachedHistoryPanel";
+import { HistoryNavigationProvider } from "@/features/history/HistoryNavigationProvider";
 import HistoryPanel from "@/features/history/HistoryPanel";
 import { cacheKeys } from "@/lib/dataCache";
 import { getTimeSeries } from "@/lib/time-series";
@@ -20,16 +21,18 @@ async function HistoryPanelWrapper({ fromCurrency, toCurrency, period }) {
     );
   } catch {
     return (
-      <CachedHistoryPanel
-        period={period}
-        fromCurrency={fromCurrency}
-        toCurrency={toCurrency}
-      />
+      <HistoryNavigationProvider>
+        <CachedHistoryPanel
+          period={period}
+          fromCurrency={fromCurrency}
+          toCurrency={toCurrency}
+        />
+      </HistoryNavigationProvider>
     );
   }
 
   return (
-    <>
+    <HistoryNavigationProvider>
       <CacheWriter
         cacheKey={cacheKeys.history(fromCurrency, toCurrency, period)}
         payload={{ series }}
@@ -38,8 +41,9 @@ async function HistoryPanelWrapper({ fromCurrency, toCurrency, period }) {
         series={series}
         fromCurrency={fromCurrency}
         toCurrency={toCurrency}
+        period={period}
       />
-    </>
+    </HistoryNavigationProvider>
   );
 }
 

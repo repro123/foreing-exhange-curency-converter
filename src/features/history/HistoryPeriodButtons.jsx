@@ -4,24 +4,10 @@ import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 
 import { HISTORY_PERIODS } from "@/data/constants";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useHistoryNavigation } from "@/features/history/HistoryNavigationProvider";
 
 export default function HistoryPeriodButtons() {
-  const urlParams = useSearchParams();
-  const router = useRouter();
-
-  const activePeriod = urlParams.get("period") || "1M";
-
-  const handlePeriodChange = (value) => {
-    const params = new URLSearchParams(urlParams.toString());
-
-    if (value === "1M") {
-      params.delete("period");
-    } else {
-      params.set("period", value);
-    }
-    router.push(`?${params.toString()}`, { scroll: false });
-  };
+  const { activePeriod, isPending, selectPeriod } = useHistoryNavigation();
 
   return (
     <div>
@@ -31,7 +17,9 @@ export default function HistoryPeriodButtons() {
             variant="secondary"
             key={period.value}
             aria-label={`View history for ${period["aria-label"]}`}
-            onClick={() => handlePeriodChange(period.value)}
+            aria-pressed={period.value === activePeriod}
+            disabled={isPending}
+            onClick={() => selectPeriod(period.value)}
             className={`${period.value === activePeriod ? "text-foreground bg-card-base" : "text-nav"}`}
           >
             {period.value}

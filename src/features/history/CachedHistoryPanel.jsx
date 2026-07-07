@@ -39,6 +39,7 @@ function CachedHistoryPanel({ fromCurrency, toCurrency, period }) {
         series={cacheEntry.series}
         fromCurrency={fromCurrency}
         toCurrency={toCurrency}
+        period={period}
       />
     </div>
   );

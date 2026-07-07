@@ -1,9 +1,10 @@
 import HistoryCards from "@/features/history/HistoryCards";
 import HistoryChart from "@/features/history/HistoryChart";
 import HistoryPeriodButtons from "@/features/history/HistoryPeriodButtons";
+import HistoryPendingOverlay from "@/features/history/HistoryPendingOverlay";
 import EmptyPanelState from "@/features/tabs/EmptyPanelState";
 
-function HistoryPanel({ series, fromCurrency, toCurrency }) {
+function HistoryPanel({ series, fromCurrency, toCurrency, period }) {
   if (!series.length) {
     return (
       <EmptyPanelState
@@ -14,19 +15,24 @@ function HistoryPanel({ series, fromCurrency, toCurrency }) {
   }
 
   return (
-    <div>
-      <div className="flex flex-col gap-4 lg:flex-row lg:justify-between lg:gap-8 lg:items-center xl:gap-12">
-        <HistoryCards series={series} />
+    <div className="relative">
+      <HistoryPendingOverlay />
 
-        <HistoryPeriodButtons />
-      </div>
+      <div>
+        <div className="flex flex-col gap-4 lg:flex-row lg:justify-between lg:gap-8 lg:items-center xl:gap-12">
+          <HistoryCards series={series} />
 
-      <div className="mt-8">
-        <HistoryChart
-          series={series}
-          fromCurrency={fromCurrency}
-          toCurrency={toCurrency}
-        />
+          <HistoryPeriodButtons />
+        </div>
+
+        <div className="mt-8">
+          <HistoryChart
+            series={series}
+            fromCurrency={fromCurrency}
+            toCurrency={toCurrency}
+            period={period}
+          />
+        </div>
       </div>
     </div>
   );
