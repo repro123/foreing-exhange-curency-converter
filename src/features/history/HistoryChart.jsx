@@ -37,7 +37,7 @@ function HistoryChart({ series, fromCurrency, toCurrency, period }) {
         </CardDescription>
       </CardHeader>
       <CardContent className="pt-4">
-        <ChartContainer config={chartConfig} className="h-120 w-full">
+        <ChartContainer config={chartConfig} className="w-full">
           <AreaChart
             accessibilityLayer
             data={series}
