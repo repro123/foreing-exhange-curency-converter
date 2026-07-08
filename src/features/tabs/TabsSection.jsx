@@ -86,7 +86,9 @@ function TabsSection({ comparePanel, historyPanel }) {
                     <span className="flex items-center gap-2">
                       {item.label}
                       {item.count != null && item.count > 0 && (
-                        <span className="preset-6 text-nav">{item.count}</span>
+                        <span className="preset-6 bg-primary/20 text-primary rounded-full p-1">
+                          {item.count}
+                        </span>
                       )}
                     </span>
                   </SelectItem>
