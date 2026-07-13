@@ -33,7 +33,7 @@ function SwapBtn() {
       size="lg"
       onClick={handleSwapCurrencies}
       aria-label="Swap currencies (Alt+S)"
-      title="Swap currencies (Alt+S)"
+      aria-keyshortcuts="Alt+S"
       className={`transition-transform duration-500 ${rotated ? "rotate-180" : "rotate-0"}`}
     >
       <HorizontalIconExchange className="hidden md:block" />

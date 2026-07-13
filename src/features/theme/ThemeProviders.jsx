@@ -1,4 +1,7 @@
+"use client";
+
 import { ThemeProvider } from "next-themes";
+import ThemeKeyboardShortcuts from "@/features/theme/ThemeKeyboardShortcuts";
 
 function ThemeProviders({ children }) {
   return (
@@ -7,6 +10,7 @@ function ThemeProviders({ children }) {
       defaultTheme="dark"
       disableTransitionOnChange
     >
+      <ThemeKeyboardShortcuts />
       {children}
     </ThemeProvider>
   );

@@ -22,7 +22,11 @@ function ThemeToggle() {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger
         render={
-          <Button variant="theme" aria-label="Switch theme">
+          <Button
+            variant="theme"
+            aria-label="Switch theme"
+            aria-keyshortcuts="Alt+N Alt+L Control+Alt+S"
+          >
             <ThemeIcon />
           </Button>
         }
@@ -32,6 +36,9 @@ function ThemeToggle() {
           <PopoverTitle id="select-theme">Select Theme</PopoverTitle>
           <PopoverDescription>
             Current theme: <span className="capitalize">{theme}</span>
+          </PopoverDescription>
+          <PopoverDescription>
+            Shortcuts: Alt+N night, Alt+L light, Ctrl+Alt+S system.
           </PopoverDescription>
           <ThemeSelector aria="select-theme" onSelect={() => setOpen(false)} />
         </PopoverHeader>

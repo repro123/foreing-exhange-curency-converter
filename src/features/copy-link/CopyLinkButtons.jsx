@@ -44,7 +44,7 @@ export default function CopyLinkButton() {
       size="lg"
       onClick={handleCopy}
       className="gap-2 preset-5-medium uppercase"
-      title="Copy link to clipboard (Alt + C)"
+      aria-keyshortcuts="Alt+C"
       disabled={copied}
     >
       {copied ? (
