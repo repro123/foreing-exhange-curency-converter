@@ -11,6 +11,7 @@ I used the [Frankfurter API](https://api.frankfurter.dev/v2) as the exchange-rat
 - [Links](#links)
 - [Features](#features)
 - [Offline and PWA Support](#offline-and-pwa-support)
+- [Recent Fixes and Improvements](#recent-fixes-and-improvements)
 - [Built With](#built-with)
 - [How I Structured the Project](#how-i-structured-the-project)
 - [My Implementation Notes](#my-implementation-notes)
@@ -64,6 +65,8 @@ My main goals were:
 - I added an `Alt+S` keyboard shortcut for swapping currencies.
 - The selected pair can be added to favorites.
 - The current conversion can be saved to the conversion log.
+- The current dashboard URL can be copied from the converter actions, making a specific currency pair, amount, period, and tab easier to share.
+- I added an `Alt+C` keyboard shortcut for copying the current link.
 
 ### Currency Picker
 
@@ -100,6 +103,7 @@ The ticker pairs currently include:
 - The chart includes a custom tooltip.
 - The panel displays summary cards for open rate, last rate, change, and percentage change.
 - If no history data is available, the UI shows an empty state instead of a broken chart.
+- I added a stable chart identifier so the generated chart styling remains consistent between server render and client hydration.
 
 ### Compare View
 
@@ -156,6 +160,7 @@ The comparison currencies currently include:
 - I added skeleton states for dashboard panels and rows.
 - I added empty states for history, comparison, favorites, and logs.
 - I added a custom app error boundary in `src/app/error.js`.
+- I use toast notifications for actions such as copying the current link.
 
 ## Offline and PWA Support
 
@@ -165,10 +170,20 @@ The comparison currencies currently include:
 - A small network status banner informs the user when the app is running from saved data.
 - The offline experience keeps the main dashboard usable instead of failing completely when the network drops.
 
+## Recent Fixes and Improvements
+
+- Added a copy-link action to the converter panel so users can share the current URL-driven dashboard state.
+- Added keyboard support for copying the current link with `Alt+C`.
+- Added success and error toast feedback for the copy-link flow.
+- Added a stable `id` to the history chart container to avoid SSR hydration mismatches caused by generated chart IDs.
+- Enabled the React Compiler in `next.config.mjs`.
+- Kept the service worker integration wired through Serwist's Turbopack helper.
+
 ## Built With
 
 - [Next.js](https://nextjs.org/) 16 App Router
 - [React](https://react.dev/) 19
+- [React Compiler](https://react.dev/learn/react-compiler) enabled through Next.js config
 - [Tailwind CSS](https://tailwindcss.com/) 4
 - [Frankfurter API](https://api.frankfurter.dev/v2) for exchange-rate data
 - [Zustand](https://zustand.docs.pmnd.rs/) for persisted client state
@@ -177,6 +192,7 @@ The comparison currencies currently include:
 - [Serwist](https://serwist.pages.dev/) for PWA and offline support
 - [Base UI](https://base-ui.com/) primitives
 - [shadcn](https://ui.shadcn.com/) and local UI components
+- [Sonner](https://sonner.emilkowal.ski/) for toast notifications
 - [Lucide React](https://lucide.dev/) and custom SVG icons
 - Local JetBrains Mono variable font
 - WebP flag assets stored in `public/flags`
@@ -203,6 +219,7 @@ src/
   features/
     check-rates/
     compare/
+    copy-link/
     currencies-number/
     favorites/
     history/
@@ -414,6 +431,7 @@ I tried to make the interface usable beyond pointer-only interaction:
 - The amount input has a screen-reader-only label.
 - The swap button has an accessible label and title.
 - The swap button supports the `Alt+S` shortcut.
+- The copy-link button has a clear title, success state, and `Alt+C` shortcut.
 - The currency picker uses a combobox pattern.
 - Duplicate currency choices are disabled with explanatory labels.
 - History period buttons have descriptive `aria-label` values.
@@ -432,6 +450,8 @@ The biggest lessons for me were:
 - URL search params are useful for dashboard state that should survive refreshes.
 - Persisted Zustand stores are a good fit for local-only user data like favorites and logs.
 - Server-side helpers keep API logic out of UI components.
+- Stable IDs matter in server-rendered client components, especially when a component generates attributes that must match during hydration.
+- URL-driven state pairs well with shareable links because users can return to or send the exact dashboard view.
 - Loading, empty, and error states need to be planned as part of the feature, not added at the very end.
 - A feature-based folder structure helps keep a growing React app more maintainable.
 
@@ -443,6 +463,8 @@ Things I would like to improve or explore next:
 - Add integration tests for the main converter flow.
 - Improve fallback behavior when the Frankfurter API is unavailable.
 - Improve CSV export escaping if log values ever become more complex.
+- Add tests for keyboard shortcuts such as swap and copy link.
+- Make SVG gradient IDs unique if multiple history charts are ever rendered on the same page.
 
 ## Author
 
