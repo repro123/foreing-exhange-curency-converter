@@ -45,7 +45,6 @@ function HistoryChart({ series, fromCurrency, toCurrency, period }) {
           <AreaChart
             accessibilityLayer
             data={series}
-            title={`${fromCurrency}/${toCurrency} exchange rate history`}
             desc={`Historical exchange rate chart for ${fromCurrency} to ${toCurrency}`}
             margin={{
               left: 12,
