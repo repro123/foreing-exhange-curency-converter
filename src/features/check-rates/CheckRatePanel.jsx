@@ -47,7 +47,7 @@ function CheckRatePanel({ currencies, from, to, amount, rate }) {
         <div className="flex w-full flex-col items-center gap-4 border-t border-dashed p-4 md:flex-row md:justify-between">
           <RateSummary from={from} to={to} rate={rate} />
 
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-4">
             <FavoriteToggleBtn />
 
             <LogBtn convertedAmount={convertedAmount} />

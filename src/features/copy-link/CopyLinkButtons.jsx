@@ -22,15 +22,20 @@ export default function CopyLinkButton() {
   }
 
   return (
-    <Button variant="outline" onClick={handleCopy} className="gap-2">
+    <Button
+      variant="outline"
+      size="lg"
+      onClick={handleCopy}
+      className="gap-2 preset-5-medium uppercase"
+    >
       {copied ? (
         <>
-          <Check className="size-4" />
+          <Check />
           Copied!
         </>
       ) : (
         <>
-          <Copy className="size-4" />
+          <Copy />
           Copy Link
         </>
       )}
