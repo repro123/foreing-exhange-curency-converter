@@ -4,6 +4,7 @@ import ConvertedAmount from "@/features/check-rates/ConvertedAmount";
 import InputCard from "@/features/check-rates/InputCard";
 import RateSummary from "@/features/check-rates/RateSummary";
 import SwapBtn from "@/features/check-rates/SwapBtn";
+import CopyLinkButton from "@/features/copy-link/CopyLinkButtons";
 import FavoriteToggleBtn from "@/features/favorites/FavoriteToggleBtn";
 import LogBtn from "@/features/logs/LogBtn";
 
@@ -50,6 +51,8 @@ function CheckRatePanel({ currencies, from, to, amount, rate }) {
             <FavoriteToggleBtn />
 
             <LogBtn convertedAmount={convertedAmount} />
+
+            <CopyLinkButton />
           </div>
         </div>
       </div>
