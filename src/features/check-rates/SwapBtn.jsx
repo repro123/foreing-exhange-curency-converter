@@ -2,6 +2,11 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import HorizontalIconExchange from "@/components/SVGs/HorizontalIconExchange";
 import VerticalExchangeIcon from "@/components/SVGs/VerticalExchangeIcon";
 import { useCurrencyParams } from "@/hooks/useCurrencyParams";
@@ -28,17 +33,26 @@ function SwapBtn() {
   }, [handleSwapCurrencies]);
 
   return (
-    <Button
-      variant="secondary"
-      size="lg"
-      onClick={handleSwapCurrencies}
-      aria-label="Swap currencies (Alt+S)"
-      aria-keyshortcuts="Alt+S"
-      className={`transition-transform duration-500 ${rotated ? "rotate-180" : "rotate-0"}`}
-    >
-      <HorizontalIconExchange className="hidden md:block" />
-      <VerticalExchangeIcon className="md:hidden block" />
-    </Button>
+    <Tooltip>
+      <TooltipTrigger
+        render={
+          <Button
+            variant="secondary"
+            size="lg"
+            onClick={handleSwapCurrencies}
+            aria-label="Swap currencies (Alt+S)"
+            aria-keyshortcuts="Alt+S"
+            className={`transition-transform duration-500 ${rotated ? "rotate-180" : "rotate-0"}`}
+          />
+        }
+      >
+        <HorizontalIconExchange className="hidden md:block" />
+        <VerticalExchangeIcon className="md:hidden block" />
+      </TooltipTrigger>
+      <TooltipContent>
+        Swap currencies <kbd>Alt+S</kbd>
+      </TooltipContent>
+    </Tooltip>
   );
 }
 

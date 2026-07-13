@@ -2,6 +2,11 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Copy, Check } from "lucide-react";
 import { toast } from "sonner";
 
@@ -39,25 +44,34 @@ export default function CopyLinkButton() {
   }, [handleCopy]);
 
   return (
-    <Button
-      variant="outline"
-      size="lg"
-      onClick={handleCopy}
-      className="gap-2 preset-5-medium uppercase"
-      aria-keyshortcuts="Alt+C"
-      disabled={copied}
-    >
-      {copied ? (
-        <>
-          <Check />
-          Copied!
-        </>
-      ) : (
-        <>
-          <Copy />
-          Copy Link
-        </>
-      )}
-    </Button>
+    <Tooltip>
+      <TooltipTrigger
+        render={
+          <Button
+            variant="outline"
+            size="lg"
+            onClick={handleCopy}
+            className="gap-2 preset-5-medium uppercase"
+            aria-keyshortcuts="Alt+C"
+            disabled={copied}
+          />
+        }
+      >
+        {copied ? (
+          <>
+            <Check />
+            Copied!
+          </>
+        ) : (
+          <>
+            <Copy />
+            Copy Link
+          </>
+        )}
+      </TooltipTrigger>
+      <TooltipContent>
+        Copy link <kbd>Alt+C</kbd>
+      </TooltipContent>
+    </Tooltip>
   );
 }
